@@ -1,3 +1,14 @@
+## misc OSx
+*~
+.#.*
+*.DS_Store
+
+## xcode
+*.xcworkspace
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
