@@ -3,7 +3,7 @@
 #ref: https://towardsdatascience.com/how-to-web-scrape-with-python-in-4-minutes-bc49186a8460
 #--------------------------------------------------------------------------------------------#
 
-print('START scrape.py')
+print('\n\nSTART _ scrape.py \n\n')
 
 # Webscrape Example
 import requests
@@ -33,25 +33,16 @@ uriOrderByLeechersLeast = '/10' # BUG_07.11.19 pirate bay broken (always orders 
 ## designates the html order that 'pirate bay' displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-# Set the URL you want to webscrape from
+# Set the URL to webscrape from
+setting_orderBy = 'uriOrderByLeechersMost'
 url = rootUrl + browseMovieUri + uriPage0 + uriOrderByLeechersMost
 
-# Connect to the URL
+# Connect to the URL & parse HTML to BeautifulSoup object
 response = requests.get(url)
-# print response (note: response #200 means it went through)
-print(f'response from requests.get({url}):\n {response}', 'uriOrderByLeechersMost')
-print()
-'''
-<Response [200]>
-'''
-
-# Parse HTML and save to BeautifulSoup object
 soup = BeautifulSoup(response.text, "html.parser")
-'''
-#prints full 'soup' parsed html text (note: example displayed below)
-#print('printing full soup parsed html text:', soup)
-#print()
-'''
+
+
+
 
 def getMagnetLink(parent):
     font_string = 'ERROR -> no file size found'
@@ -63,8 +54,9 @@ def getMagnetLink(parent):
 
 def getFileSizeStr(parent):
     file_size = parent.find('font').contents[0]
-    file_size = file_size[file_size.find('Size'):file_size.rfind(', ')]
-    return file_size
+    idxStart = file_size.find('Size')+5
+    idxEnd = file_size.rfind(', ')
+    return file_size[idxStart:idxEnd]
 
 def getSeedLeechCntStr(parent):
     global flag_SE_LE_to_print
@@ -109,7 +101,7 @@ def getPrintTorrentDataSets(all_a_tags):
             # FIND '/torrent/' URIs -> '/torrent' URIs dictate data rows with seed & leech counts
             if href_tag.find('/torrent/') == 0:
                 torrentCnt += 1
-                print(f" [{torrentCnt}] {i}: href='{href_tag}'")
+                print(f" [{torrentCnt}] href#{i}: '{rootUrl+href_tag}'")
 
                 ## since we now found a correct data row with seed & leech counts
                 # GET magnet link from '<a href>' that is 2 parent levels up
@@ -130,65 +122,28 @@ def getPrintTorrentDataSets(all_a_tags):
         else:
             print('class not found')
 
-print('checking Pirate Bay (for seed or leech displayed first)...')
+# print response (note: '<Response [200]>' means it went through)
+print(f'RESPONSE from requests.get({url}):\n {response}\n {setting_orderBy}')
+print()
+
+# print full 'soup' parsed html text
+#print('printing full soup parsed html text:', soup)
+#print()
+
+print('CHECKING Pirate Bay (for seed or leech displayed first)...')
 # get all 'abbr' tags
 all_abbr_tags = soup.findAll('abbr')
 setSeedLeechCntDisplayOrder(all_abbr_tags)
 
-## traverse through site header (using <abbr> html tags)
-##   to determine if seed or leech count is displayed first
-#for tags in all_abbr_tags:
-#    if str(tags).find('Seed'):
-#        print(' ...SEED found first \n')
-#        flag_SE_LE_print_order = 1
-#        break
-#    if str(tags).find('Leech'):
-#        print(' ...LEECH found first \n')
-#        flag_SE_LE_print_order = 0
-#        break
-
-
-print('printing all_abbr_tags...', *all_abbr_tags, sep='\n ')
+print('PRINTING all_abbr_tags...', *all_abbr_tags, sep='\n ')
 print()
 
-print('searching & printing torrent rows & seed | leech counts...')
+print('SEARCH & PRINTING torrent rows & seed | leech counts...')
 # get all 'a' tags
 all_a_tags = soup.findAll('a')
 getPrintTorrentDataSets(all_a_tags)
 
-## traverse through all html tags <a>, looking for torrent rows containing seed & leech counts
-#torrentCnt = 0
-#for i,tag in enumerate(all_a_tags):
-#
-#    # FIND 'href' tags -> 'href' tags dictate potential data rows with possible '/torrent'
-#    if tag['href']:
-#        href_tag = tag['href']
-#
-#        # FIND '/torrent/' URIs -> '/torrent' URIs dictate data rows with seed & leech counts
-#        if href_tag.find('/torrent/') == 0:
-#            torrentCnt += 1
-#            print(f" [{torrentCnt}] {i}: href='{href_tag}'")
-#
-#            ## since we now found a correct data row with seed & leech counts
-#            # GET magnet link from '<a href>' that is 2 parent levels up
-#            mag_link = getMagnetLink(tag.parent.parent)
-#
-#            ## since we now found a correct data row with seed & leech counts
-#            # GET file size from <font> tag that is 2 parent levels up
-#            file_size = getFileSizeStr(tag.parent.parent)
-#
-#            ## since we now found a correct data row with seed & leech counts
-#            # GET seed & leech counts from 2 <td> tags that are 3 parent levels up
-#            seed_leech = getSeedLeechCntStr(tag.parent.parent.parent)
-#
-#            print(f'{seed_leech}')
-#            print(f'  Torrent File Size: {file_size}')
-#            print(f'  Magnet Link: {mag_link}')
-#            print()
-#    else:
-#        print('class not found')
-
-print(' ALL seed | leech counts found... exit(0)')
+print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)
 
 
