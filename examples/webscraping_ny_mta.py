@@ -3,6 +3,8 @@
 #ref: https://towardsdatascience.com/how-to-web-scrape-with-python-in-4-minutes-bc49186a8460
 #--------------------------------------------------------------------------------------------#
 
+print()
+
 # Webscrape Example
 import requests
 import urllib.request
@@ -15,8 +17,9 @@ url = 'http://web.mta.info/developers/turnstile.html'
 # Connect to the URL
 response = requests.get(url)
 
-# print response
-print(f'response:\n {response}\n') # response #200 means it went through
+# print response (note: response #200 means it went through)
+print(f'response from requests.get({url}):\n {response}')
+print()
 '''
 <Response [200]>
 '''
@@ -35,22 +38,30 @@ all_a_tags = soup.findAll('a')
 #prints all 'a' tags (w/o indexes)
 print('printing all_a_tags (w/o indexes):', *all_a_tags, sep = '\n ')
 print()
+'''
 
+'''
 #prints all 'a' tags using list comprehension to tuple (w/ indexes)
 all_a_tags_tup = [(all_a_tags.index(x), x) for x in all_a_tags]
 print('printing all_a_tags [list compr tup (w/ indexes)]:', *all_a_tags_tup, sep = "\n ")
 print()
+'''
 
+'''
 #prints all 'a' tags using list comprehension to str (w/ indexes)
 all_a_tags_str = [f"{all_a_tags.index(x)}: {x}" for x in all_a_tags]
 print('printing all_a_tags [list compr str (w/ indexes)]:', *all_a_tags_str, sep = "\n ")
 print()
+'''
 
+'''
 #prints all 'a' tags using 'enumerate' list comprehension to tuple (w/ indexes)
 all_a_tags_tup = [i for i in enumerate(all_a_tags)]
 print('printing all_a_tags [enumerate list compr tup (w/ indexes)]:', *all_a_tags_tup, sep = "\n ")
 print()
+'''
 
+'''
 #prints all 'a' tags using 'enumerate' list comprehension to str (w/ indexes)
 all_a_tags_str = [f'{i}: {v}' for i,v in enumerate(all_a_tags)]
 print('printing all_a_tags [enumerate list compr str (w/ indexes)]:', *all_a_tags_str, sep = "\n ")
@@ -86,6 +97,9 @@ for i in range(36,len(soup.findAll('a'))+1): #'a' tags are for links
     urllib.request.urlretrieve(download_url,'./'+link[link.find('/turnstile_')+1:])
     print(' download DONE... sleep(1)')
     time.sleep(1)
+
+print(' ALL downloads complete... exit(0)')
+exit(0)
 
 
 #--------------------------------------------------------------------------------#
