@@ -24,35 +24,38 @@ print(f'response:\n {response}\n') # response #200 means it went through
 # Parse HTML and save to BeautifulSoup object
 soup = BeautifulSoup(response.text, "html.parser")
 '''
-print(f'soup:\n {soup}') # note: example displayed below
+#prints full 'soup' parsed html text (note: example displayed below)
+print('printing full soup parsed html text:', soup)
+print()
 '''
 
 # To locate all 'a' tags
 all_a_tags = soup.findAll('a')
-#print(f'all_a_tags:\n {all_a_tags}\n')
+'''
+#prints all 'a' tags (w/o indexes)
+print('printing all_a_tags (w/o indexes):', *all_a_tags, sep = '\n ')
+print()
 
-#strPring = 'printing all_a_tags:\n %s' % *all_a_tags
-#print(strPring)
-cnt = 0
-strSep = "\n %i" % cnt
-#print('printing all_a_tags:\n ', *all_a_tags, sep = f"\n %i" % cnt++)
-#print('printing all_a_tags:\n ', *all_a_tags, sep = strSep)
-#print('printing all_a_tags:\n ', *all_a_tags, sep = '\n '+ str(*all_a_tags.index))
-#print('printing all_a_tags:\n ', *all_a_tags, sep = '\n ' + str(cnt++))
+#prints all 'a' tags using list comprehension to tuple (w/ indexes)
+all_a_tags_tup = [(all_a_tags.index(x), x) for x in all_a_tags]
+print('printing all_a_tags [list compr tup (w/ indexes)]:', *all_a_tags_tup, sep = "\n ")
+print()
 
-#print()
+#prints all 'a' tags using list comprehension to str (w/ indexes)
+all_a_tags_str = [f"{all_a_tags.index(x)}: {x}" for x in all_a_tags]
+print('printing all_a_tags [list compr str (w/ indexes)]:', *all_a_tags_str, sep = "\n ")
+print()
 
-cnt = 0
-print('\n'.join(map(str, all_a_tags)))
-#print('\n'.join(map(str, all_a_tags)))
+#prints all 'a' tags using 'enumerate' list comprehension to tuple (w/ indexes)
+all_a_tags_tup = [i for i in enumerate(all_a_tags)]
+print('printing all_a_tags [enumerate list compr tup (w/ indexes)]:', *all_a_tags_tup, sep = "\n ")
+print()
 
-
-#print('printing all_a_tags:\n ')
-#print(*all_a_tags, sep = "\n ")
-#print()
-
-
-#print(*a, sep = "\n")
+#prints all 'a' tags using 'enumerate' list comprehension to str (w/ indexes)
+all_a_tags_str = [f'{i}: {v}' for i,v in enumerate(all_a_tags)]
+print('printing all_a_tags [enumerate list compr str (w/ indexes)]:', *all_a_tags_str, sep = "\n ")
+print()
+'''
 
 
 # Let's take a quick look at the very first data file, which starts on line 36
@@ -86,11 +89,11 @@ for i in range(36,len(soup.findAll('a'))+1): #'a' tags are for links
 
 
 #--------------------------------------------------------------------------------#
-## example HTML print from 'BeautifulSoup(response.text, "html.parser")' call
+## example full 'soup' parsed html text from 'BeautifulSoup(response.text, "html.parser")'
 #--------------------------------------------------------------------------------#
 #soup = BeautifulSoup(response.text, "html.parser")
-#print(f'soup:\n {soup}')
-
+#print('printing full soup parsed html text:', soup)
+#print()
 '''
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
@@ -297,7 +300,7 @@ for i in range(36,len(soup.findAll('a'))+1): #'a' tags are for links
     </div>
     </noscript></div> <!-- close mainbox -->
     </body></html>
-    '''
+'''
 #--------------------------------------------------------------------------------#
 #--------------------------------------------------------------------------------#
 
