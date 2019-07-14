@@ -24,6 +24,14 @@ flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 response = requests.get(url)
 soup = BeautifulSoup(response.text, "html.parser")
 
+def getInfoHashFromMagnetLink(mag_link):
+    info_hash = 'ERROR -> no info hash found'
+    if mag_link is None:
+        return info_hash
+    mag_link = str(mag_link)
+    idxStart = mag_link.find("btih:")+5
+    idxEnd = mag_link.find("&dn=")
+    return mag_link[idxStart:idxEnd]
 
 def getMagnetLink(parent):
     font_string = 'ERROR -> no file size found'
@@ -88,6 +96,10 @@ def getPrintTorrentDataSets(all_a_tags):
                 # GET magnet link from '<a href>' that is 2 parent levels up
                 mag_link = getMagnetLink(tag.parent.parent)
 
+                ## info_hash is extractable from magnet link
+                # GET info hash from mag_link
+                info_hash = getInfoHashFromMagnetLink(mag_link)
+
                 ## since we now found a correct data row with seed & leech counts
                 # GET file size from <font> tag that is 2 parent levels up
                 file_size = getFileSizeStr(tag.parent.parent)
@@ -98,6 +110,7 @@ def getPrintTorrentDataSets(all_a_tags):
 
                 print(f'{seed_leech}')
                 print(f'  Torrent File Size: {file_size}')
+                print(f'  Info_Hash: {info_hash}')
                 print(f'  Magnet Link: {mag_link}')
                 print()
         else:
