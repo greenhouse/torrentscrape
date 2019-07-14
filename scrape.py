@@ -15,14 +15,18 @@ from bs4 import BeautifulSoup # python3.7 -m pip install bs4
 # Set the URL params to webscrape from sites/__init__.py
 rootUrl = sites.rootUrl
 setting_orderBy = sites.setting_orderBy
-url = sites.url
+url = sites.url + '/'
+uriOrderByLeechersMost = sites.uriOrderByLeechersMost
 
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-# Connect to the URL & parse HTML to BeautifulSoup object
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
+iLastPageNum = 30
+torrentCnt = 0
+lst_info_hash = []
+
+def getUrlPageNum(pageNum):
+    return url + str(pageNum) + uriOrderByLeechersMost
 
 def getInfoHashFromMagnetLink(mag_link):
     info_hash = 'ERROR -> no info hash found'
@@ -49,8 +53,10 @@ def getFileSizeStr(parent):
 
 def getSeedLeechCntStr(parent):
     global flag_SE_LE_to_print
-    strSeech = 'ERROR -> seed count'
+    strSeed = 'ERROR -> seed count'
     strLeech = 'ERROR -> leech count'
+    iSeed = -1
+    iLeech = -1
     all_td_tags = parent.findAll(align='right')
     
     # get just numeric values of seed & leech count
@@ -58,12 +64,14 @@ def getSeedLeechCntStr(parent):
     for td_tag in all_td_tags:
         strTag = td_tag.string
         if flag_SE_LE_to_print:
-            strSeech = f'  Seed Cnt: {strTag}'
+            strSeed = f'  Seed Cnt: {strTag}'
+            iSeed = int(strTag)
             flag_SE_LE_to_print = 0
         else:
             strLeech = f'  Leech Cnt: {strTag}'
+            iLeech = int(strTag)
             flag_SE_LE_to_print = 1
-    return strSeech + '\n' + strLeech
+    return strSeed + '\n' + strLeech, iSeed, iLeech
 
 def setSeedLeechCntDisplayOrder(all_abbr_tags):
     # traverse through site header (using <abbr> html tags)
@@ -79,8 +87,8 @@ def setSeedLeechCntDisplayOrder(all_abbr_tags):
             break
 
 def getPrintTorrentDataSets(all_a_tags):
+    global torrentCnt
     # traverse through all html tags <a>, looking for torrent rows containing seed & leech counts
-    torrentCnt = 0
     for i,tag in enumerate(all_a_tags):
 
         # FIND 'href' tags -> 'href' tags dictate potential data rows with possible '/torrent'
@@ -106,37 +114,63 @@ def getPrintTorrentDataSets(all_a_tags):
 
                 ## since we now found a correct data row with seed & leech counts
                 # GET seed & leech counts from 2 <td> tags that are 3 parent levels up
-                seed_leech = getSeedLeechCntStr(tag.parent.parent.parent)
+                seed_leech, iSeed, iLeech = getSeedLeechCntStr(tag.parent.parent.parent)
 
-                print(f'{seed_leech}')
-                print(f'  Torrent File Size: {file_size}')
-                print(f'  Info_Hash: {info_hash}')
-                print(f'  Magnet Link: {mag_link}')
-                print()
+                if iLeech >= iSeed:
+                    print(f'{seed_leech}')
+                    print(f'  Torrent File Size: {file_size}')
+                    print(f'  Info_Hash: {info_hash}')
+                    print(f'  Magnet Link: {mag_link}')
+                    print()
+    
+                    lst_info_hash.append(info_hash)
+
+                #print(f'{seed_leech}')
+                #print(f'  Torrent File Size: {file_size}')
+                #print(f'  Info_Hash: {info_hash}')
+                #print(f'  Magnet Link: {mag_link}')
+                #print()
         else:
             print('class not found')
 
-# print response (note: '<Response [200]>' means it went through)
-print(f'RESPONSE from requests.get({url}):\n {response}\n {setting_orderBy}')
-print()
+# Connect to the URL & parse HTML to BeautifulSoup object
+#response = requests.get(url)
+#soup = BeautifulSoup(response.text, "html.parser")
 
-# print full 'soup' parsed html text
-#print('printing full soup parsed html text:', soup)
-#print()
+for x in range(0, iLastPageNum+1):
+    pageUrl = getUrlPageNum(x)
 
-print('CHECKING torrent site (for seed|leech display order)...')
-# get all 'abbr' tags
-all_abbr_tags = soup.findAll('abbr')
-setSeedLeechCntDisplayOrder(all_abbr_tags)
+    # Connect to the URL & parse HTML to BeautifulSoup object
+    response = requests.get(pageUrl)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-print('PRINTING all_abbr_tags...', *all_abbr_tags, sep='\n ')
-print()
+    # print response (note: '<Response [200]>' means it went through)
+    print(f'RESPONSE from requests.get({pageUrl}):\n {response}\n {setting_orderBy}')
+    print()
 
-print('SEARCH & PRINTING torrent rows & seed | leech counts...')
-# get all 'a' tags
-all_a_tags = soup.findAll('a')
-getPrintTorrentDataSets(all_a_tags)
+    # print full 'soup' parsed html text
+    #print('printing full soup parsed html text:', soup)
+    #print()
 
+    print('CHECKING torrent site (for seed|leech display order)...')
+    # get all 'abbr' tags
+    all_abbr_tags = soup.findAll('abbr')
+    setSeedLeechCntDisplayOrder(all_abbr_tags)
+
+    print('PRINTING all_abbr_tags...', *all_abbr_tags, sep='\n ')
+    print()
+
+    print('SEARCH & PRINTING torrent rows & seed | leech counts...')
+    # get all 'a' tags
+    all_a_tags = soup.findAll('a')
+    getPrintTorrentDataSets(all_a_tags)
+    print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
+    time.sleep(1)
+
+#Print all info hashes found
+tot_info_hash_found = len(lst_info_hash)
+lst_info_hash_str = [f'{i}: {v}' for i,v in enumerate(lst_info_hash)]
+print(f'\nPrinting {tot_info_hash_found} info_hash found (w/ indexes) _ where leech > seed:', *lst_info_hash_str, sep = "\n ")
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)
 
