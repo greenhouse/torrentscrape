@@ -9,39 +9,20 @@ print('\n\nSTART _ scrape.py \n\n')
 import requests
 import urllib.request
 import time
-from bs4 import BeautifulSoup
+import sites
+from bs4 import BeautifulSoup # python3.7 -m pip install bs4
 
-# pirate bay root url
-rootUrl = 'https://www.thepiratebay.org'
-browseMovieUri = '/browse/201' #note: same as w/ 'browseMovieUriP0' appended
-uriPage0OrderByDefault = '/0/3' #note: default same as just 'browseMovieUri'
+# Set the URL params to webscrape from
+rootUrl = sites.rootUrl
+setting_orderBy = sites.setting_orderBy
+url = sites.url
 
-uriPage0 = '/0' #note: default same as just 'browseMovieUri'
-uriPage1 = '/1'
-uriPage2 = '/2'
-uriPage3 = '/3'
-uriPage4 = '/4'
-
-uriOrderByUpdate = '/3' #note: default same as just 'browseMovieUri'
-uriOrderByName = '/1'
-uriOrderBySize = '/5'
-uriOrderBySeedersMost = '/7'
-uriOrderBySeedersLeast = '/8'
-uriOrderByLeechersMost = '/9'
-uriOrderByLeechersLeast = '/10' # BUG_07.11.19 pirate bay broken (always orders by 'most')
-
-## designates the html order that 'pirate bay' displaying SE & LE
+## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
-
-# Set the URL to webscrape from
-setting_orderBy = 'uriOrderByLeechersMost'
-url = rootUrl + browseMovieUri + uriPage0 + uriOrderByLeechersMost
 
 # Connect to the URL & parse HTML to BeautifulSoup object
 response = requests.get(url)
 soup = BeautifulSoup(response.text, "html.parser")
-
-
 
 
 def getMagnetLink(parent):
@@ -130,7 +111,7 @@ print()
 #print('printing full soup parsed html text:', soup)
 #print()
 
-print('CHECKING Pirate Bay (for seed or leech displayed first)...')
+print('CHECKING torrent site (for seed|leech display order)...')
 # get all 'abbr' tags
 all_abbr_tags = soup.findAll('abbr')
 setSeedLeechCntDisplayOrder(all_abbr_tags)
