@@ -9,10 +9,10 @@ print('\n\nSTART _ scrape.py \n\n')
 import requests
 import urllib.request
 import time
-import sites
+import sites #required: sites/__init__.py
 from bs4 import BeautifulSoup # python3.7 -m pip install bs4
 
-# Set the URL params to webscrape from
+# Set the URL params to webscrape from sites/__init__.py
 rootUrl = sites.rootUrl
 setting_orderBy = sites.setting_orderBy
 url = sites.url
