@@ -133,6 +133,29 @@ def getPrintTorrentDataSets(all_a_tags):
         else:
             print('class not found')
 
+def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False):
+    strGoIndexPrint = None
+    if goIdxPrint:
+        strGoIndexPrint = '(w/ indexes)'
+    else:
+        strGoIndexPrint = '(w/o indexes)'
+
+    lst_str = None
+    if useEnumerate:
+        if goIdxPrint:
+            lst_str = [f'{i}: {v}' for i,v in enumerate(lst)]
+        else:
+            lst_str = [f'{v}' for i,v in enumerate(lst)]
+    else:
+        if goIdxPrint:
+            lst_str = [f"{lst.index(x)}: {x}" for x in lst]
+        else:
+            lst_str = [f"{x}" for x in lst]
+
+    lst_len = len(lst)
+    print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
+
+
 # Connect to the URL & parse HTML to BeautifulSoup object
 #response = requests.get(url)
 #soup = BeautifulSoup(response.text, "html.parser")
@@ -141,7 +164,10 @@ for x in range(0, iLastPageNum+1):
     pageUrl = getUrlPageNum(x)
 
     # Connect to the URL & parse HTML to BeautifulSoup object
+    print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
     response = requests.get(pageUrl)
+    print(f'RECEIVED response -> GET on URL: {pageUrl}')
+    print(f'... proceeding to parse response.text with BeautifulSoup\n\n')
     soup = BeautifulSoup(response.text, "html.parser")
 
     # print response (note: '<Response [200]>' means it went through)
@@ -164,15 +190,12 @@ for x in range(0, iLastPageNum+1):
     # get all 'a' tags
     all_a_tags = soup.findAll('a')
     getPrintTorrentDataSets(all_a_tags)
+    printListStr(lst_info_hash, strListTitle='current info_hash found; where LEECH > SEED', useEnumerate=True, goIdxPrint=True)
     print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
-#Print all info hashes found
-tot_info_hash_found = len(lst_info_hash)
-lst_info_hash_str = [f'{i}: {v}' for i,v in enumerate(lst_info_hash)]
-print(f'\nPrinting {tot_info_hash_found} info_hash found (w/ indexes) _ where leech > seed:', *lst_info_hash_str, sep = "\n ")
+printListStr(lst_info_hash, strListTitle='ALL info_hash found; where leech > seed', useEnumerate=True, goIdxPrint=True)
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)
-
 
 
