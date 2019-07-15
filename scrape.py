@@ -86,7 +86,14 @@ def setSeedLeechCntDisplayOrder(all_abbr_tags):
             flag_SE_LE_print_order = 0
             break
 
-def getPrintTorrentDataSets(all_a_tags):
+def getSplicedTitleFromHrefTag(href_tag):
+    idxSlash1 = href_tag.find('/')
+    idxSlash2 = href_tag.find('/', idxSlash1+1)
+    idxSlash3 = href_tag.find('/', idxSlash2+1)
+    spliced_href_tag = href_tag[idxSlash3+1:]
+    return spliced_href_tag
+
+def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
     global torrentCnt
     # traverse through all html tags <a>, looking for torrent rows containing seed & leech counts
     for i,tag in enumerate(all_a_tags):
@@ -98,7 +105,7 @@ def getPrintTorrentDataSets(all_a_tags):
             # FIND '/torrent/' URIs -> '/torrent' URIs dictate data rows with seed & leech counts
             if href_tag.find('/torrent/') == 0:
                 torrentCnt += 1
-                print(f" [{torrentCnt}] href#{i}: '{rootUrl+href_tag}'")
+                print(f" [{torrentCnt}] href# {i}: '{rootUrl+href_tag}'")
 
                 ## since we now found a correct data row with seed & leech counts
                 # GET magnet link from '<a href>' that is 2 parent levels up
@@ -116,14 +123,16 @@ def getPrintTorrentDataSets(all_a_tags):
                 # GET seed & leech counts from 2 <td> tags that are 3 parent levels up
                 seed_leech, iSeed, iLeech = getSeedLeechCntStr(tag.parent.parent.parent)
 
-                if iLeech >= iSeed:
+                if iSeed < iLeech:
                     print(f'{seed_leech}')
                     print(f'  Torrent File Size: {file_size}')
                     print(f'  Info_Hash: {info_hash}')
                     print(f'  Magnet Link: {mag_link}')
                     print()
     
-                    lst_info_hash.append(info_hash)
+                    spl_href_tag = getSplicedTitleFromHrefTag(href_tag)
+                    strPgNum = 'PG# ' + str(iPgNum)
+                    lst_info_hash.append((strPgNum, info_hash, iSeed, iLeech, spl_href_tag))
 
                 #print(f'{seed_leech}')
                 #print(f'  Torrent File Size: {file_size}')
@@ -133,7 +142,7 @@ def getPrintTorrentDataSets(all_a_tags):
         else:
             print('class not found')
 
-def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False):
+def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goStrTupPrint=False):
     strGoIndexPrint = None
     if goIdxPrint:
         strGoIndexPrint = '(w/ indexes)'
@@ -143,14 +152,26 @@ def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=Fals
     lst_str = None
     if useEnumerate:
         if goIdxPrint:
-            lst_str = [f'{i}: {v}' for i,v in enumerate(lst)]
+            if goStrTupPrint:
+                lst_str = [f"{i}: {', '.join(map(str,v))}" for i,v in enumerate(lst)]
+            else:
+                lst_str = [f'{i}: {v}' for i,v in enumerate(lst)]
         else:
-            lst_str = [f'{v}' for i,v in enumerate(lst)]
+            if goStrTupPrint:
+                lst_str = [f"{', '.join(map(str,v))}" for i,v in enumerate(lst)]
+            else:
+                lst_str = [f'{v}' for i,v in enumerate(lst)]
     else:
         if goIdxPrint:
-            lst_str = [f"{lst.index(x)}: {x}" for x in lst]
+            if goStrTupPrint:
+                lst_str = [f"{lst.index(x)}: {', '.join(map(str,x))}" for x in lst]
+            else:
+                lst_str = [f'{lst.index(x)}: {x}' for x in lst]
         else:
-            lst_str = [f"{x}" for x in lst]
+            if goStrTupPrint:
+                lst_str = [f"{', '.join(map(str,x))}" for x in lst]
+            else:
+                lst_str = [f'{x}' for x in lst]
 
     lst_len = len(lst)
     print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
@@ -189,12 +210,14 @@ for x in range(0, iLastPageNum+1):
     print('SEARCH & PRINTING torrent rows & seed | leech counts...')
     # get all 'a' tags
     all_a_tags = soup.findAll('a')
-    getPrintTorrentDataSets(all_a_tags)
-    printListStr(lst_info_hash, strListTitle='current info_hash found; where LEECH > SEED', useEnumerate=True, goIdxPrint=True)
+    getPrintTorrentDataSets(all_a_tags, iPgNum=x)
+
+    # print current info_hash list accumulated
+    printListStr(lst_info_hash, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
     print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
-printListStr(lst_info_hash, strListTitle='ALL info_hash found; where leech > seed', useEnumerate=True, goIdxPrint=True)
+printListStr(lst_info_hash, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)
 
