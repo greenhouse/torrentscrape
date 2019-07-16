@@ -9,14 +9,17 @@ print('\n\nSTART _ scrape.py \n\n')
 import requests
 import urllib.request
 import time
-import sites #required: sites/__init__.py
 from bs4 import BeautifulSoup # python3.7 -m pip install bs4
+
+import sites #required: sites/__init__.py
+from utilities import *
 
 # Set the URL params to webscrape from sites/__init__.py
 rootUrl = sites.rootUrl
 setting_orderBy = sites.setting_orderBy
 url = sites.url + '/'
 uriOrderByLeechersMost = sites.uriOrderByLeechersMost
+iSiteTypeId = sites.iSiteTypeId
 
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
@@ -24,7 +27,11 @@ flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 iLastPageNum = 30
 torrentCnt = 0
 lst_info_hash = []
+lst_info_hash_print = []
+lst_info_hash_str = ''
+
 lst_info_hash_all = []
+lst_info_hash_all_print = []
 
 def getUrlPageNum(pageNum):
     return url + str(pageNum) + uriOrderByLeechersMost
@@ -124,10 +131,14 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                 # GET seed & leech counts from 2 <td> tags that are 3 parent levels up
                 seed_leech, iSeed, iLeech = getSeedLeechCntStr(tag.parent.parent.parent)
 
-                ## create info_hash tuple
+                ## create info_hash tuple for print
                 spl_href_tag = getSplicedTitleFromHrefTag(href_tag)
                 strPgNum = 'PG# ' + str(iPgNum)
-                tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag)
+                tup_info_hash_print = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag)
+                
+                ## create info_hash tuple for database
+                tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag, href_tag, mag_link, 0)
+                #tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag, '<href_tag>', '<mag_link>', 0)
 
                 if iSeed < iLeech:
                     print(f'{seed_leech}')
@@ -138,13 +149,15 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                     
                     # add tuple to list of hashes in demand
                     lst_info_hash.append(tup_info_hash)
+                    lst_info_hash_print.append(tup_info_hash_print)
                 
                 # add tuple to list of all hashes scraped
                 lst_info_hash_all.append(tup_info_hash)
+                lst_info_hash_all_print.append(tup_info_hash_print)
         else:
             print('class not found')
 
-def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goStrTupPrint=False):
+def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goStrTupPrint=False, goPrint=True):
     strGoIndexPrint = None
     if goIdxPrint:
         strGoIndexPrint = '(w/ indexes)'
@@ -177,6 +190,7 @@ def printListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=Fals
 
     lst_len = len(lst)
     print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
+    return lst_str
 
 
 # Connect to the URL & parse HTML to BeautifulSoup object
@@ -215,12 +229,15 @@ for x in range(0, iLastPageNum+1):
     getPrintTorrentDataSets(all_a_tags, iPgNum=x)
 
     # print current info_hash list accumulated
-    printListStr(lst_info_hash, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
+    lst_info_hash_str = getPrintListStr(lst_info_hash_print, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
     print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
-printListStr(lst_info_hash, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
-#printListStr(lst_info_hash_all, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
+getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
+#printListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
+
+tup_scrape_inst = (iSiteTypeId, rootUrl, iLastPageNum, 0)
+procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)
