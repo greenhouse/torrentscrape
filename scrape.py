@@ -127,7 +127,7 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                 ## create info_hash tuple
                 spl_href_tag = getSplicedTitleFromHrefTag(href_tag)
                 strPgNum = 'PG# ' + str(iPgNum)
-                tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, spl_href_tag)
+                tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag)
 
                 if iSeed < iLeech:
                     print(f'{seed_leech}')
