@@ -2,7 +2,7 @@ print('\n\nSTART _ torrentscrape.py \n\n')
 import logging
 import json
 import sites #required: sites/__init__.py
-import request_agents
+from request_agents import *
 from flask import Flask
 from flask import request, redirect,Response
 
@@ -96,8 +96,8 @@ lst_MethGetScrapeLast = ['GET', 'POST']
 # GET all db entries from latest scrape
 @app.route(kPathGetScrapeLast, methods=lst_MethGetScrapeLast)
 def GetAllLatest():
-    #logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
-    logging.info(f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
+    #logging.info(f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
     return request_agents.media.pushPhoto(request)
 
 

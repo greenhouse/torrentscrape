@@ -1,7 +1,7 @@
 print('GO torrent.py -> starting IMPORTs')
 from utilities import *
 import logging
-from request_agents import helpers
+#from request_agents import helpers
 import time # new
 
 #from controllers import parser
