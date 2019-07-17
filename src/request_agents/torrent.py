@@ -53,8 +53,8 @@ def test():                                                             #
 #       sel_keys_tbl_settings = ['id','dt_created','dt_updated','min_ios_ver','min_droid_ver'
 #                                'url_img_splash']
 #=======================================================================#
-def getLatest(request):
-    funcname = '(%s) getLatest' % filename
+def getLatestScrape(request):
+    funcname = '(%s) getLatestScrape' % filename
     logenter(funcname, simpleprint=False, tprint=True)
     
     # note: utilizing additional dict here (instead of just request.form/args)

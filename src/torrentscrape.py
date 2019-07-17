@@ -98,7 +98,7 @@ lst_MethGetScrapeLast = ['GET', 'POST']
 def GetAllLatest():
     logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
     #logging.info(f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
-    return request_agents.torrent.getLatest(request)
+    return getLatestScrape(request)
 
 
 
