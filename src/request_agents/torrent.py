@@ -72,7 +72,7 @@ def getLatestScrape(request):
 #    selrows = database.selectAllFromTableOrderByColDescAsc('settings', 'id', 'desc')
     selrows = procCallGetLatestScrape()
     
-    loginfo(funcname, '\n\nselrows: %s\n\n' % selrows, '')
+    #loginfo(funcname, '\n\nselrows: %s\n\n' % selrows, '')
     if selrows == -1: # validate db errors #
         err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}
         return JSONResponse (err_resp_db)
