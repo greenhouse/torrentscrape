@@ -2,10 +2,9 @@ print('GO xlogger.py -> starting IMPORTs')
 import logging
 import time
 from datetime import datetime
-#from globals import globals
+import sites #required: sites/__init__.py
 
-
-#logging.basicConfig(filename=globals.GLOBAL_PATH_DEV_LOGS, level=logging.DEBUG)
+logging.basicConfig(filename=sites.GLOBAL_PATH_DEV_LOGS, level=logging.DEBUG)
 logging.info(' ')
 logging.info('logging started -> ./xlogger.py')
 

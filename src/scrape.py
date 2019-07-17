@@ -2,8 +2,7 @@
 #ref: https://github.com/julia-git/webscraping_ny_mta/blob/master/Webscraping.ipynb
 #ref: https://towardsdatascience.com/how-to-web-scrape-with-python-in-4-minutes-bc49186a8460
 #--------------------------------------------------------------------------------------------#
-
-print('\n\nSTART _ scrape.py \n\n')
+print('GO scrape.py -> starting IMPORTs')
 
 # Webscrape Example
 import requests
@@ -13,6 +12,9 @@ from bs4 import BeautifulSoup # python3.7 -m pip install bs4
 
 import sites #required: sites/__init__.py
 from utilities import *
+
+filename = 'scrape.py'
+logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filename, simpleprint=False, tprint=True)
 
 # Set the URL params to webscrape from sites/__init__.py
 rootUrl = sites.rootUrl
@@ -24,7 +26,7 @@ iSiteTypeId = sites.iSiteTypeId
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-iLastPageNum = 30
+iLastPageNum = 5
 torrentCnt = 0
 lst_info_hash = []
 lst_info_hash_print = []
@@ -238,6 +240,16 @@ getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where se
 
 tup_scrape_inst = (iSiteTypeId, rootUrl, iLastPageNum, 0)
 procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
+
+
+#selrows = procCallGetLatestScrape()
+#print(f'Printing... selrows', *selrows, sep='\n ')
+#selrows = -1
+#if selrows == -1: # validate db errors #
+##    return JSONResponse (err_resp_db)
+##    err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}
+#    resp = JSONResponse (err_resp_db)
+#    print('JSONResponse: ', resp, sep='\n')
 
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)

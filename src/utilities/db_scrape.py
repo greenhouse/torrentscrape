@@ -1,6 +1,8 @@
-#from constants import *
+print('GO db_scrape.py -> starting IMPORTs')
 import sites #required: sites/__init__.py
 from utilities import *
+import json
+from flask import Response
 
 '''
 # https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/
@@ -27,6 +29,9 @@ cur = None
 
 strErrCursor = "global var cur == None, returning -1"
 strErrConn = "FAILED to connect to db"
+
+def JSONResponse(dict):
+    return Response( json.dumps(dict), mimetype="application/json" )
 
 #====================================================#
 ##              db connection support               ##
@@ -112,6 +117,37 @@ def getProcValsTupleFromQueryDict(dbQueryDict):
     logexit(funcname, f" >> TUPLE VALS: {tupleVals}", simpleprint=True, tprint=True)
     return tupleVals
 
+## parse database query row into json dict ##
+# @descr: parses a database query row, into a json
+# @expects: db query row dictionary and keys to parse
+# @requires: row, keys
+# @returns: dictionary with db query string return as a json
+def getJsonDictFromDBQueryRowWithKeys(row, keys):
+    funcname = '(%s) getJsonDictFromDBQueryRowWithKeys' % filename
+    logenter(funcname, simpleprint=False, tprint=True)
+
+    jsonDict = {}
+    for key in keys:
+        #loginfo(logfuncname, '\n\n key: %s\n\n' % key, '')
+        if key not in row:
+            #loginfo(logfuncname, '\n\n key: %s NOT IN row: %s\n\n' % (key, row), '')
+            continue
+
+        if re.match('dt_*', key) is not None:
+            try:
+                #convert dt to seconds since 1970
+                # note: needed because JSONResponse() parsing issues
+                jsonDict[key] = jsonTimestampFromDBQueryTimestamp(row[key])
+
+            except Exception as e:
+                logerror(logfuncname, "\n\n!EXCEPTION HIT!\n\n e: '%s';\n\n in 'jsonDict[key] = jsonTimestampFromDBQueryTimestamp(row[key])'\n\n" % e, " falling back to 'jsonDict[key] = row[key]' instead")
+                jsonDict[key] = row[key]
+        else:
+            jsonDict[key] = row[key]
+
+    #loginfo(logfuncname, '\njsonDict: %s\n' % jsonDict, '')
+    return jsonDict
+
 #====================================================#
 ##              proc statement support              ##
 #====================================================#
@@ -158,6 +194,46 @@ def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
         close_database_connection()
 
         return result
+
+def procCallGetLatestScrape():
+    funcname = f'({filename}) procCallGetLatestScrape()'
+    logenter(funcname, simpleprint=False, tprint=True)
+
+    ############# open db connection ###############
+    global cur
+    if open_database_connection() < 0:
+        return -1
+
+    if cur == None:
+        logerror(funcname, strErrCursor, strErrConn, simpleprint=False)
+        return -1
+
+    #args = tup_scrape_inst
+
+    ## perform db query ##
+    try:
+        procArgs = cur.callproc(f"GetLatestTorrentScrape", ())
+        loginfo(funcname, f' >> GetLatestTorrentScrape RESULT procArgs: {procArgs}', simpleprint=True)
+        rowCnt = cur.execute(f"call GetLatestTorrentScrape();")
+        rows = cur.fetchall()
+        
+#        balance = -1 if rowCnt == 0 else rows[0][cColPlayerBalance]
+        loginfo(funcname, f' >> GetLatestTorrentScrape RESULT rowCnt: {rowCnt}; procArgs: {procArgs};', simpleprint=True)
+        print(f'Printing... rows', *rows, sep='\n ')
+#        for row in rows:
+#            print(f'Printing... row: {row}')
+        result = rows
+    except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
+        strE_0 = f"Exception hit... \nFAILED to call GetLatestTorrentScrape(); \n\nprocArgs: {procArgs}; \n\nreturning -1"
+        strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
+        logerror(funcname, strE_0, strE_1, simpleprint=False)
+        result = -1
+    finally:
+        ############# close db connection ###############
+        close_database_connection()
+
+        return result
+
 
 #====================================================#
 #====================================================#
