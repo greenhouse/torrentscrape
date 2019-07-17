@@ -244,12 +244,6 @@ procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
 #selrows = procCallGetLatestScrape()
 #print(f'Printing... selrows', *selrows, sep='\n ')
-#selrows = -1
-#if selrows == -1: # validate db errors #
-##    return JSONResponse (err_resp_db)
-##    err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}
-#    resp = JSONResponse (err_resp_db)
-#    print('JSONResponse: ', resp, sep='\n')
 
 print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
 exit(0)

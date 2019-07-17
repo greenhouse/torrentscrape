@@ -40,8 +40,20 @@ err_resp_s3 = {'ERROR':vErrS3, 'MSG':kErrS3, 'PAYLOAD':{'error':vErrS3}}
 
 #=======================================================================#
                 # Common database query keys #
-# psql return columns getInitSettings #
-sel_keys_tbl_settings = ['id','dt_created','dt_updated','min_ios_ver','min_droid_ver','url_img_splash']
+# mysql return columns get last torrent scrape  #
+sel_keys_tbl_torrent  = ['id',
+                         'fk_scrape_inst_id',
+                         'scrape_idx',
+                         'scrape_pg_num',
+                         'info_hash',
+                         'seed_cnt',
+                         'leech_cnt',
+                         'file_size',
+                         'scrape_href_title',
+                         'scrape_href',
+                         'mag_link',
+                         'dt_created',
+                         'dt_updated']
 
 #=======================================================================#
 #=======================================================================#
