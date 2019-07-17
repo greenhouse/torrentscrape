@@ -72,7 +72,7 @@ def getLatestScrape(request):
 #    selrows = database.selectAllFromTableOrderByColDescAsc('settings', 'id', 'desc')
     selrows = procCallGetLatestScrape()
     
-    loginfo(logfuncname, '\n\nselrows: %s\n\n' % selrows, '')
+    loginfo(funcname, '\n\nselrows: %s\n\n' % selrows, '')
     if selrows == -1: # validate db errors #
         err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}
         return JSONResponse (err_resp_db)
@@ -99,8 +99,8 @@ def getLatestScrape(request):
         l.append (jsonRow) # append this json return list entry #
 
     payloaddict = {'error':vErrNone,'settings_arr':l,'auth_token':"TODO ; )"}
-    logexit(logfuncname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
-    #logexit(logfuncname, 'return error:0', '\npayloaddict: <print disabled\n')
+    logexit(funcname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
+    #logexit(funcname, 'return error:0', '\npayloaddict: <print disabled\n')
     return JSONResponse ({'ERROR':vErrNone,'MSG':'get latest successfully!','PAYLOAD':payloaddict})
 
 ######################################################################
