@@ -208,20 +208,14 @@ def procCallGetLatestScrape():
         logerror(funcname, strErrCursor, strErrConn, simpleprint=False)
         return -1
 
-    #args = tup_scrape_inst
-
     ## perform db query ##
     try:
         procArgs = cur.callproc(f"GetLatestTorrentScrape", ())
         loginfo(funcname, f' >> GetLatestTorrentScrape RESULT procArgs: {procArgs}', simpleprint=True)
         rowCnt = cur.execute(f"call GetLatestTorrentScrape();")
         rows = cur.fetchall()
-        
-#        balance = -1 if rowCnt == 0 else rows[0][cColPlayerBalance]
         loginfo(funcname, f' >> GetLatestTorrentScrape RESULT rowCnt: {rowCnt}; procArgs: {procArgs};', simpleprint=True)
-        print(f'Printing... rows', *rows, sep='\n ')
-#        for row in rows:
-#            print(f'Printing... row: {row}')
+        #print(f'Printing... rows', *rows, sep='\n ')
         result = rows
     except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
         strE_0 = f"Exception hit... \nFAILED to call GetLatestTorrentScrape(); \n\nprocArgs: {procArgs}; \n\nreturning -1"
@@ -234,12 +228,8 @@ def procCallGetLatestScrape():
 
         return result
 
-
 #====================================================#
 #====================================================#
-
-
-
 
 loginfo(filename, "\n CLASSES & FUNCTIONS initialized:- STARTING -> additional '%s' run scripts (if applicable) . . . \n\n" % filename, simpleprint=True)
 
