@@ -26,7 +26,7 @@ iSiteTypeId = sites.iSiteTypeId
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-iLastPageNum = 5
+iLastPageNum = 20
 torrentCnt = 0
 lst_info_hash = []
 lst_info_hash_print = []
