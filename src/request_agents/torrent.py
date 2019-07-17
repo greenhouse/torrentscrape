@@ -47,7 +47,7 @@ def test():                                                             #
 # @returnjson:
 #  {'ERROR':<vErr>,
 #   'MSG':'<err/status msg>',
-#   'PAYLOAD':{'error':<vErr>, 'settings_arr':[sel_keys_tbl_settings, ...],
+#   'PAYLOAD':{'error':<vErr>, 'settings_arr':[sel_keys_tbl_torrent, ...],
 #              'auth_token':<new auth_token>}}
 #
 #       sel_keys_tbl_settings = ['id','dt_created','dt_updated','min_ios_ver','min_droid_ver'
@@ -98,7 +98,7 @@ def getLatestScrape(request):
         jsonRow = getJsonDictFromDBQueryRowWithKeys(row, sel_keys_tbl_torrent)
         l.append (jsonRow) # append this json return list entry #
 
-    payloaddict = {'error':vErrNone,'settings_arr':l,'auth_token':"TODO ; )"}
+    payloaddict = {'error':vErrNone,'torrent_arr':l,'auth_token':"TODO ; )"}
     #logexit(funcname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
     logexit(funcname, 'return error:0', '\npayloaddict: <print disabled\n')
     return JSONResponse ({'ERROR':vErrNone,'MSG':'get latest successfully!','PAYLOAD':payloaddict})
