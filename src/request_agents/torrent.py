@@ -99,8 +99,8 @@ def getLatestScrape(request):
         l.append (jsonRow) # append this json return list entry #
 
     payloaddict = {'error':vErrNone,'settings_arr':l,'auth_token':"TODO ; )"}
-    logexit(funcname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
-    #logexit(funcname, 'return error:0', '\npayloaddict: <print disabled\n')
+    #logexit(funcname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
+    logexit(funcname, 'return error:0', '\npayloaddict: <print disabled\n')
     return JSONResponse ({'ERROR':vErrNone,'MSG':'get latest successfully!','PAYLOAD':payloaddict})
 
 ######################################################################
