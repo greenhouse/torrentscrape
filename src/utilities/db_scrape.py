@@ -3,6 +3,7 @@ import sites #required: sites/__init__.py
 from utilities import *
 import json
 from flask import Response
+import re
 
 '''
 # https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/
