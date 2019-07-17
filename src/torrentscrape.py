@@ -37,7 +37,7 @@ def slash():
     return "Why would you go with just '/'? Are you trying access the root? --> :P torrentscrape"
 
 @app.route('/api', methods=['GET', 'POST'])
-def slash_request():
+def slash_api():
     return "/api successful! torrentscrape"
 
 @app.route('/api/request', methods=['GET', 'POST'])
