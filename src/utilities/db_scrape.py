@@ -134,7 +134,7 @@ def getJsonDictFromDBQueryRowWithKeys(row, keys):
             #loginfo(logfuncname, '\n\n key: %s NOT IN row: %s\n\n' % (key, row), '')
             continue
 
-        if re.match('dt_*', key) is not None:
+        if match('dt_*', key) is not None:
             try:
                 #convert dt to seconds since 1970
                 # note: needed because JSONResponse() parsing issues
