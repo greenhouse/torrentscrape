@@ -129,9 +129,9 @@ def getJsonDictFromDBQueryRowWithKeys(row, keys):
 
     jsonDict = {}
     for key in keys:
-        #loginfo(logfuncname, '\n\n key: %s\n\n' % key, '')
+        #loginfo(funcname, '\n\n key: %s\n\n' % key, '')
         if key not in row:
-            #loginfo(logfuncname, '\n\n key: %s NOT IN row: %s\n\n' % (key, row), '')
+            #loginfo(funcname, '\n\n key: %s NOT IN row: %s\n\n' % (key, row), '')
             continue
 
         if match('dt_*', key) is not None:
@@ -141,12 +141,12 @@ def getJsonDictFromDBQueryRowWithKeys(row, keys):
                 jsonDict[key] = jsonTimestampFromDBQueryTimestamp(row[key])
 
             except Exception as e:
-                logerror(logfuncname, "\n\n!EXCEPTION HIT!\n\n e: '%s';\n\n in 'jsonDict[key] = jsonTimestampFromDBQueryTimestamp(row[key])'\n\n" % e, " falling back to 'jsonDict[key] = row[key]' instead")
+                logerror(funcname, "\n\n!EXCEPTION HIT!\n\n e: '%s';\n\n in 'jsonDict[key] = jsonTimestampFromDBQueryTimestamp(row[key])'\n\n" % e, " falling back to 'jsonDict[key] = row[key]' instead")
                 jsonDict[key] = row[key]
         else:
             jsonDict[key] = row[key]
 
-    #loginfo(logfuncname, '\njsonDict: %s\n' % jsonDict, '')
+    #loginfo(funcname, '\njsonDict: %s\n' % jsonDict, '')
     return jsonDict
 
 #====================================================#
