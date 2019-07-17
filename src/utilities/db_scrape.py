@@ -149,6 +149,14 @@ def getJsonDictFromDBQueryRowWithKeys(row, keys):
     #loginfo(funcname, '\njsonDict: %s\n' % jsonDict, '')
     return jsonDict
 
+## gets json compatible timestamp from db query timestamp ##
+def jsonTimestampFromDBQueryTimestamp(timestamp):
+    if timestamp == None:
+        return None
+    
+    # NOTE: code %s means seconds,
+    #   ref: http://strftime.org/
+    return int(timestamp.strftime("%s"))
 #====================================================#
 ##              proc statement support              ##
 #====================================================#
