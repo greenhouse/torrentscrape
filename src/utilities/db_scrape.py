@@ -125,7 +125,7 @@ def getProcValsTupleFromQueryDict(dbQueryDict):
 # @returns: dictionary with db query string return as a json
 def getJsonDictFromDBQueryRowWithKeys(row, keys):
     funcname = '(%s) getJsonDictFromDBQueryRowWithKeys' % filename
-    logenter(funcname, simpleprint=False, tprint=True)
+    logenter(funcname, simpleprint=False, tprint=False)
 
     jsonDict = {}
     for key in keys:
@@ -157,6 +157,7 @@ def jsonTimestampFromDBQueryTimestamp(timestamp):
     # NOTE: code %s means seconds,
     #   ref: http://strftime.org/
     return int(timestamp.strftime("%s"))
+
 #====================================================#
 ##              proc statement support              ##
 #====================================================#
