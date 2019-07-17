@@ -1,0 +1,1 @@
+sudo uwsgi --enable-threads --ini ./src/deploy.ini
