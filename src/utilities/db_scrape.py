@@ -242,8 +242,6 @@ def procCallGetLatestScrape():
 #====================================================#
 
 loginfo(filename, "\n CLASSES & FUNCTIONS initialized:- STARTING -> additional '%s' run scripts (if applicable) . . . \n\n" % filename, simpleprint=True)
-
-
 print('\n')
 print('#======================================================================#')
 loginfo(filename, "\n  DONE Executing additional '%s' run scripts ... \n" % filename, simpleprint=True)

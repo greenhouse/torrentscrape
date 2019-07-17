@@ -3,15 +3,15 @@ import logging
 import json
 import sites #required: sites/__init__.py
 from request_agents import *
+from utilities import *
 from flask import Flask
 from flask import request, redirect,Response
 
-#import time
-#from datetime import datetime
-#from threading import Timer
-
 GLOBAL_PATH_DEV_LOGS = sites.GLOBAL_PATH_DEV_LOGS
 GLOBAL_PATH_ISE_LOGS = sites.GLOBAL_PATH_ISE_LOGS
+
+filename = 'torrentscrape.py'
+logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filename, simpleprint=False, tprint=True)
 
 logging.basicConfig(filename=GLOBAL_PATH_DEV_LOGS, level=logging.DEBUG)
 logging.info('*======================================================================*')
@@ -19,8 +19,6 @@ logging.info('*                 server started -> torrentscrape.py called       
 logging.info('*======================================================================*')
 
 app = Flask(__name__)
-
-#runloop.startrunloop()
 
 if __name__ == '__main__':
     app.run() #app.run(debug=True)
@@ -34,9 +32,13 @@ if not app.debug:
 #=====================================================#
 ### testing endpoints ###
 #=====================================================#
-@app.route('/api')
+@app.route('/')
 def slash():
     return "Why would you go with just '/'? Are you trying access the root? --> :P torrentscrape"
+
+@app.route('/api', methods=['GET', 'POST'])
+def slash_request():
+    return "/api successful! torrentscrape"
 
 @app.route('/api/request', methods=['GET', 'POST'])
 def slash_request():
@@ -96,14 +98,17 @@ lst_MethGetScrapeLast = ['GET', 'POST']
 # GET all db entries from latest scrape
 @app.route(kPathGetScrapeLast, methods=lst_MethGetScrapeLast)
 def GetAllLatest():
-    logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
-    #logging.info(f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    #logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
     return getLatestScrape(request)
 
 
 
 
-
+loginfo(filename, "\n CLASSES & FUNCTIONS initialized:- STARTING -> additional '%s' run scripts (if applicable) . . . \n\n" % filename, simpleprint=True)
+print('\n')
+print('#======================================================================#')
+loginfo(filename, "\n  DONE Executing additional '%s' run scripts ... \n" % filename, simpleprint=True)
 
 
 
