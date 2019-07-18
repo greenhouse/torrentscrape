@@ -1,4 +1,6 @@
-from xlogger import *
+print('GO test.py -> starting IMPORTs')
+from utilities import *
+#from xlogger import *
 
 filename = 'test.py'
 logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filename, simpleprint=False, tprint=True)
@@ -46,7 +48,7 @@ lst_strMsg = lstMsgContent
 #from cmd_deposit import *
 #CMD_deposit('<test-mem#1492>', lst_strMsg)
 
-from binance_dm4c import *
+#from binance_dm4c import *
 usdAmnt = 865
 #symbFull = 'ETHUSDT'
 symbFull = 'BTCUSDT'

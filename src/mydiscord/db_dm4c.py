@@ -1,5 +1,10 @@
 print('GO db_dm4c.py -> starting IMPORTs')
-from constants import *
+from mydiscord import *
+#from . import __init__
+#from discord import *
+from utilities import *
+#from constants import *
+
 
 '''
 # https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/

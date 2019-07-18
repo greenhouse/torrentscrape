@@ -1,9 +1,13 @@
 print('GO seedfeed.py -> starting IMPORTs')
-from constants import *
-from db_dm4c import *
-from discord_util import *
-from cmd_deposit import *
-from cmd_email import *
+#import mydiscord
+from mydiscord import *
+from utilities import *
+#from constants import *
+from mydiscord.db_dm4c import *
+from mydiscord.discord_util import *
+from mydiscord.cmd_deposit import *
+from mydiscord.cmd_email import *
+#from binance_dm4c import *
 
 '''
 # https://discordapp.com/developers/applications/

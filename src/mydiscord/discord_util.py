@@ -1,5 +1,6 @@
 print('GO discord_util.py -> starting IMPORTs')
-from constants import *
+from utilities import *
+#from constants import *
 
 '''
 # https://discordapp.com/developers/applications/
@@ -111,7 +112,7 @@ def printSupportRequestNotificationSent(toMember, forMember):
 
 def getChannelsForGuild(guild):
     funcname = '(%s) getChannelsForGuild' % filename
-    logenter(funcname, '(guild=%s)' % str(guild), simpleprint=False, tprint=False)
+    logenter(funcname, '(guild=%s)' % str(guild), simpleprint=False, tprint=True)
     lstChannels = []
     for channel in guild.channels:
         lstChannels.append(channel)

@@ -1,5 +1,6 @@
 print('GO binance_dm4c.py -> starting IMPORTs')
-from constants import *
+from utilities import *
+#from constants import *
 
 '''
 # https://github.com/sammchardy/python-binance

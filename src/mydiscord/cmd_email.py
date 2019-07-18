@@ -1,7 +1,8 @@
 print('GO cmd_email.py -> starting IMPORTs')
-from constants import *
-from db_dm4c import *
-from discord_util import *
+from utilities import *
+#from constants import *
+#from db_dm4c import *
+#from discord_util import *
 #from binance_dm4c import *
 
 filename = 'cmd_email.py'

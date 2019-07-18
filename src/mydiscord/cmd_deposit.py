@@ -1,8 +1,9 @@
 print('GO cmd_deposit.py -> starting IMPORTs')
-from constants import *
-from db_dm4c import *
-from discord_util import *
-from binance_dm4c import *
+from utilities import *
+#from constants import *
+#from db_dm4c import *
+#from discord_util import *
+#from binance_dm4c import *
 
 '''
 # https://discordapp.com/developers/applications/
