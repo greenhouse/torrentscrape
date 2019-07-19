@@ -288,7 +288,7 @@ for x in range(0, iLastPageNum+1):
     # print current info_hash list accumulated
     lst_info_hash_str = getPrintListStr(lst_info_hash_print, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
     printCurrentScrapeMetrics(exit=False)
-    print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
+    print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
