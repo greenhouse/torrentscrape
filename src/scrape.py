@@ -199,19 +199,30 @@ def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=F
 #response = requests.get(url)
 #soup = BeautifulSoup(response.text, "html.parser")
 
+cntExceptionsHit = 0
+cntRequest = 0
+cntResp200 = 0
+cntResp502 = 0
 for x in range(0, iLastPageNum+1):
     pageUrl = getUrlPageNum(x)
 
     response = None
+    bExcept = False
     try:
         # Connect to the URL & parse HTML to BeautifulSoup object
-        print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
+        cntRequest += 1
+        print(f'ATTEMPTING request #{cntRequest} -> GET on URL: {pageUrl}')
         response = requests.get(pageUrl)
+        if response.status_code == 200:
+            cntResp200 += 1
+        if response.status_code == 502:
+            cntResp502 += 1
     except ValueError as e:
         strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl});"
         strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
         logerror(filename, strE_0, strE_1, simpleprint=False)
         logalert(filename, "Exception hit with 'GET' request; continuing to next iteration", simpleprint=False, tprint=True)
+        bExcept = True
         continue
     except Exception as e:
         #print type(e)       # the exception instance
@@ -223,9 +234,11 @@ for x in range(0, iLastPageNum+1):
         strE_3 = f"\n __Exception__ e.args: \n{e.args}\n __Exception__"
         logerror(filename, f"{strE_0}", f" {strE_1}\n {strE_2}\n {strE_2}\n", simpleprint=False, tprint=True)
         logalert(filename, "Exception hit with 'GET' request; continuing to next iteration", simpleprint=False, tprint=True)
+        bExcept = True
         continue
     finally:
-        logalert(filename, "Exception hit with 'GET' request; continuing to next iteration", simpleprint=False, tprint=True)
+        if bExcept: cntExceptionsHit += 1
+        print(f' ... exception hit: {bExcept} -> ATTEMPTING request -> GET on URL: {pageUrl}')
 
     ## Connect to the URL & parse HTML to BeautifulSoup object
     #print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
@@ -271,7 +284,13 @@ procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 #selrows = procCallGetLatestScrape()
 #print(f'Printing... selrows', *selrows, sep='\n ')
 
-print('\n\nEND _ ALL seed | leech counts found... exit(0) \n\n')
+strLstCnt = f'ALL seed | leech counts found: {len(lst_info_hash)}'
+strExceptCnt = f'Total Exception Count: {cntExceptionsHit}'
+strRequestCnt = f'Total Request Count: {cntRequest}'
+strResp200Cnt = f'Total Response 200 Count: {cntResp200}'
+strResp502Cnt = f'Total Response 502 Count: {cntResp502}'
+print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
+#print(f'\n\nEND _ \nALL seed | leech counts found {len(lst_info_hash)} ... \nException Count: {cntExceptionsHit} ... \nexit(0) \n\n')
 exit(0)
 
 
