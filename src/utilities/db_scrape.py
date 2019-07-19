@@ -20,10 +20,10 @@ filename = 'db_scrape.py'
 logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filename, simpleprint=False, tprint=True)
 
 #db_connect from sites/__init__.py
-dbUser = sites.dbUser
-dbPw = sites.dbPw
-dbName = sites.dbName
-dbHost = sites.dbHost
+dbUser = sites.dbUserScrape
+dbPw = sites.dbPwScrape
+dbName = sites.dbNameScrape
+dbHost = sites.dbHostScrape
 
 db = None
 cur = None
@@ -195,7 +195,7 @@ def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
             loginfo(funcname, f' >> InsertTorrentRecord RESULT procArgs: . . . ', simpleprint=True)
         result = 1
     except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
-        strE_0 = f"Exception hit... \nFAILED to call AdminCreateScrapeInstance({tup_scrape_inst}); \n\ninfoHashTupArr: {infoHashTupArr}; \n\nreturning -1"
+        strE_0 = f"Exception hit... \nFAILED to call InsertScrapeInstance({tup_scrape_inst}); \n\ninfoHashTupArr: {infoHashTupArr}; \n\nreturning -1"
         strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
         logerror(funcname, strE_0, strE_1, simpleprint=False)
         result = -1
