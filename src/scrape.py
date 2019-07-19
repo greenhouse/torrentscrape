@@ -19,10 +19,11 @@ logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filena
 # Set the URL params to webscrape from sites/__init__.py
 rootUrl = sites.rootUrl
 setting_orderBy = sites.setting_orderBy
-url = sites.url + '/'
+#url = sites.url + '/'
 uriOrderByLeechersMost = sites.uriOrderByLeechersMost
 iSiteTypeId = sites.iSiteTypeId
 strSiteSubTypeUri = sites.strSiteSubTypeUri
+url = sites.url + strSiteSubTypeUri + '/'
 
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
