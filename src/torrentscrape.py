@@ -83,6 +83,16 @@ lst_MethGetInitSett = ['POST']
 kPathGetScrapeLast = '/api/get/scrape/last'
 lst_MethGetScrapeLast = ['GET', 'POST']
 
+kPathGetScrapeLast1 = '/api/get/scrape/last/1'
+kPathGetScrapeLast2 = '/api/get/scrape/last/2'
+kPathGetScrapeLast3 = '/api/get/scrape/last/3'
+kPathGetScrapeLast4 = '/api/get/scrape/last/4'
+kPathGetScrapeLast5 = '/api/get/scrape/last/5'
+kPathGetScrapeLast6 = '/api/get/scrape/last/6'
+kPathGetScrapeLast7 = '/api/get/scrape/last/7'
+kPathGetScrapeLast8 = '/api/get/scrape/last/8'
+
+
 ##====================================#
 ### SETTINGS/OTHER request apis      ##
 ##====================================#
@@ -102,6 +112,49 @@ def GetAllLatest():
     logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
     return getLatestScrape(request)
 
+@app.route(kPathGetScrapeLast1, methods=lst_MethGetScrapeLast)
+def GetAllLatest1():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=1):
+
+@app.route(kPathGetScrapeLast2, methods=lst_MethGetScrapeLast)
+def GetAllLatest2():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=2):
+
+@app.route(kPathGetScrapeLast3, methods=lst_MethGetScrapeLast)
+def GetAllLatest3():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=3):
+
+@app.route(kPathGetScrapeLast4, methods=lst_MethGetScrapeLast)
+def GetAllLatest4():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=4):
+
+@app.route(kPathGetScrapeLast5, methods=lst_MethGetScrapeLast)
+def GetAllLatest5():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=5):
+
+@app.route(kPathGetScrapeLast6, methods=lst_MethGetScrapeLast)
+def GetAllLatest6():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=6):
+
+@app.route(kPathGetScrapeLast7, methods=lst_MethGetScrapeLast)
+def GetAllLatest7():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=7):
+
+@app.route(kPathGetScrapeLast8, methods=lst_MethGetScrapeLast)
+def GetAllLatest8():
+    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    return getLatestSubType(request, subType=8):
+
+def getLatestSubType(request, subType=0):
+    logenter(filename, f"request: {request}; subType: {subType}")
+    return getLatestScrapeSubType(request, subType)
 
 
 

@@ -236,6 +236,37 @@ def procCallGetLatestScrape():
 
         return result
 
+def procCallGetLatestScrapeTest(subTypeId=0):
+    funcname = f'({filename}) procCallGetLatestScrapeTest()'
+    logenter(funcname, simpleprint=False, tprint=True)
+
+    ############# open db connection ###############
+    global cur
+    if open_database_connection() < 0:
+        return -1
+
+    if cur == None:
+        logerror(funcname, strErrCursor, strErrConn, simpleprint=False)
+        return -1
+
+    ## perform db query ##
+    try:
+        rowCnt = cur.execute(f"call GetLatestTorrentScrapeTest({subTypeId});")
+        rows = cur.fetchall()
+        loginfo(funcname, f' >> GetLatestTorrentScrapeTest RESULT rowCnt: {rowCnt};', simpleprint=True)
+        #print(f'Printing... rows', *rows, sep='\n ')
+        result = rows
+    except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
+        strE_0 = f"Exception hit... \nFAILED to call GetLatestTorrentScrapeTest(); \n\nreturning -1"
+        strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
+        logerror(funcname, strE_0, strE_1, simpleprint=False)
+        result = -1
+    finally:
+        ############# close db connection ###############
+        close_database_connection()
+
+        return result
+
 #====================================================#
 #====================================================#
 

@@ -88,6 +88,26 @@ def getLatestScrape(request):
     logexit(funcname, 'return error:0', 'payloaddict: <print disabled>\n')
     return JSONResponse ({'ERROR':vErrNone,'MSG':'get latest successfully!','PAYLOAD':payloaddict})
 
+def getLatestScrapeSubType(request, subType):
+    funcname = '(%s) getLatestScrapeSubType' % filename
+    logenter(funcname, simpleprint=False, tprint=True)
+
+    selrows = procCallGetLatestScrapeTest(subType)
+    #loginfo(funcname, '\n\nselrows: %s\n\n' % selrows, '')
+    if selrows == -1: # validate db errors #
+        err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}
+        return JSONResponse (err_resp_db)
+
+    l = []
+    for row in selrows:
+        jsonRow = getJsonDictFromDBQueryRowWithKeys(row, sel_keys_tbl_torrent)
+        l.append (jsonRow) # append this json return list entry #
+
+    payloaddict = {'error':vErrNone,'torrent_arr':l,'auth_token':"TODO ; )"}
+    #logexit(funcname, 'return error:0', '\npayloaddict: %s\n' % payloaddict)
+    logexit(funcname, 'return error:0', 'payloaddict: <print disabled>\n')
+    return JSONResponse ({'ERROR':vErrNone,'MSG':'get latest successfully!','PAYLOAD':payloaddict})
+
 ######################################################################
 
 
