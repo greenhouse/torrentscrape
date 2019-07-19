@@ -211,7 +211,6 @@ for x in range(0, iLastPageNum+1):
         strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl});"
         strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
         logerror(filename, strE_0, strE_1, simpleprint=False)
-        continue
     except Exception as e:
         #print type(e)       # the exception instance
         #print e.args        # arguments stored in .args
