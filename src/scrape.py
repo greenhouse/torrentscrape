@@ -205,9 +205,9 @@ def printCurrentScrapeMetrics(exit=False):
     strResp502Cnt = f'{strCurrTotal} Response 502 Count: {cntResp502}'
 
     if exit:
-        print(f'\n\nEND _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}' f'exit(0) \n\n', sep='\n')
+        print(f'\n\nEND _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'exit(0) \n\n', sep='\n')
     else:
-        print(f'\n\n {strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', sep='\n ')
+        print(f'\n\nSTATUS _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', sep='\n')
 
     #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
