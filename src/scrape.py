@@ -208,9 +208,21 @@ for x in range(0, iLastPageNum+1):
         print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
         response = requests.get(pageUrl)
     except ValueError as e:
-        strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl}); \ncontinuing next iteration"
+        strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl});"
         strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
-        logerror(funcname, strE_0, strE_1, simpleprint=False)
+        logerror(filename, strE_0, strE_1, simpleprint=False)
+        continue
+    except Exception as e:
+        #print type(e)       # the exception instance
+        #print e.args        # arguments stored in .args
+        #print e             # __str__ allows args to be printed directly
+        strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl}); \nException is NOT 'ValueError';"
+        strE_1 = f"\n __Exception__ e: \n{e}\n __Exception__"
+        strE_2 = f"\n __Exception__ type(e): \n{type(e)}\n __Exception__"
+        strE_3 = f"\n __Exception__ e.args: \n{e.args}\n __Exception__"
+        logerror(filename, f"{strE_0}", f" {strE_1}\n {strE_2}\n {strE_2}\n", simpleprint=False, tprint=True)
+    finally:
+        logalert(filename, "Exception hit with 'GET' request; continuing to next iteration", simpleprint=False, tprint=True)
         continue
 
     ## Connect to the URL & parse HTML to BeautifulSoup object
