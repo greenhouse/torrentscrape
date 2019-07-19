@@ -93,7 +93,7 @@ def getLatestScrapeSubType(request, subType):
     funcname = '(%s) getLatestScrapeSubType' % filename
     logenter(funcname, simpleprint=False, tprint=True)
 
-    selrows = procCallGetLatestScrapeTest(subType)
+    selrows = procCallGetLatestScrapeSubType(subType)
     #loginfo(funcname, '\n\nselrows: %s\n\n' % selrows, '')
     if selrows == -1: # validate db errors #
         err_resp_db = {'ERROR':vErrDb, 'MSG':kErrDb, 'PAYLOAD':{'error':vErrDb}}

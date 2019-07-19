@@ -236,8 +236,8 @@ def procCallGetLatestScrape():
 
         return result
 
-def procCallGetLatestScrapeTest(subTypeId=0):
-    funcname = f'({filename}) procCallGetLatestScrapeTest()'
+def procCallGetLatestScrapeSubType(subTypeId=0):
+    funcname = f'({filename}) procCallGetLatestScrapeSubType({subTypeId})'
     logenter(funcname, simpleprint=False, tprint=True)
 
     ############# open db connection ###############
@@ -251,13 +251,13 @@ def procCallGetLatestScrapeTest(subTypeId=0):
 
     ## perform db query ##
     try:
-        rowCnt = cur.execute(f"call GetLatestTorrentScrapeTest({subTypeId});")
+        rowCnt = cur.execute(f"call GetLatestTorrentScrapeSubType({subTypeId});")
         rows = cur.fetchall()
-        loginfo(funcname, f' >> GetLatestTorrentScrapeTest RESULT rowCnt: {rowCnt};', simpleprint=True)
+        loginfo(funcname, f' >> GetLatestTorrentScrapeSubType RESULT rowCnt: {rowCnt};', simpleprint=True)
         #print(f'Printing... rows', *rows, sep='\n ')
         result = rows
     except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
-        strE_0 = f"Exception hit... \nFAILED to call GetLatestTorrentScrapeTest(); \n\nreturning -1"
+        strE_0 = f"Exception hit... \nFAILED to call GetLatestTorrentScrapeSubType(); \n\nreturning -1"
         strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
         logerror(funcname, strE_0, strE_1, simpleprint=False)
         result = -1
