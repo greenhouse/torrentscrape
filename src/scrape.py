@@ -202,9 +202,21 @@ def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=F
 for x in range(0, iLastPageNum+1):
     pageUrl = getUrlPageNum(x)
 
-    # Connect to the URL & parse HTML to BeautifulSoup object
-    print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
-    response = requests.get(pageUrl)
+    response = None
+    try:
+        # Connect to the URL & parse HTML to BeautifulSoup object
+        print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
+        response = requests.get(pageUrl)
+    except ValueError as e:
+        strE_0 = f"Exception hit... \nFAILED 'GET' request: requests.get({pageUrl}); \ncontinuing next iteration"
+        strE_1 = f"\n __Exception__: \n{e}\n __Exception__"
+        logerror(funcname, strE_0, strE_1, simpleprint=False)
+        continue
+
+    ## Connect to the URL & parse HTML to BeautifulSoup object
+    #print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
+    #response = requests.get(pageUrl)
+
     print(f'RECEIVED response -> GET on URL: {pageUrl}')
     print(f'... proceeding to parse response.text with BeautifulSoup\n\n')
     soup = BeautifulSoup(response.text, "html.parser")
