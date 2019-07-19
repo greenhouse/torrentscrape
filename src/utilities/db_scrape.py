@@ -176,14 +176,12 @@ def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
         logerror(funcname, strErrCursor, strErrConn, simpleprint=False)
         return -1
 
-    args = tup_scrape_inst
-
     ## perform db query ##
     try:
         procArgs = cur.callproc(f"InsertScrapeInstance", tup_scrape_inst)
-        rowCnt = cur.execute(f"select @_InsertScrapeInstance_3;")
+        rowCnt = cur.execute(f"select @_InsertScrapeInstance_4;")
         rows = cur.fetchall()
-        scrape_inst_id = -1 if rowCnt == 0 else rows[0]['@_InsertScrapeInstance_3']
+        scrape_inst_id = -1 if rowCnt == 0 else rows[0]['@_InsertScrapeInstance_4']
         scrape_inst_id = (scrape_inst_id,)
         loginfo(funcname, f' >> InsertScrapeInstance RESULT procArgs: {procArgs}', simpleprint=True)
         for idx, tup in enumerate(infoHashTupArr):

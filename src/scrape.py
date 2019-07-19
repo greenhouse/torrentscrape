@@ -22,11 +22,12 @@ setting_orderBy = sites.setting_orderBy
 url = sites.url + '/'
 uriOrderByLeechersMost = sites.uriOrderByLeechersMost
 iSiteTypeId = sites.iSiteTypeId
+strSiteSubTypeUri = sites.strSiteSubTypeUri
 
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-iLastPageNum = 40
+iLastPageNum = 2
 torrentCnt = 0
 lst_info_hash = []
 lst_info_hash_print = []
@@ -277,7 +278,7 @@ for x in range(0, iLastPageNum+1):
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
 #printListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
-tup_scrape_inst = (iSiteTypeId, rootUrl, iLastPageNum, 0)
+tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
 procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
 
@@ -290,7 +291,6 @@ strRequestCnt = f'Total Request Count: {cntRequest}'
 strResp200Cnt = f'Total Response 200 Count: {cntResp200}'
 strResp502Cnt = f'Total Response 502 Count: {cntResp502}'
 print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
-#print(f'\n\nEND _ \nALL seed | leech counts found {len(lst_info_hash)} ... \nException Count: {cntExceptionsHit} ... \nexit(0) \n\n')
 exit(0)
 
 
