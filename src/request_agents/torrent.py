@@ -1,5 +1,5 @@
 print('GO torrent.py -> starting IMPORTs')
-import sites
+from sites import *
 from utilities import *
 import time # new
 from flask import request, redirect,Response
