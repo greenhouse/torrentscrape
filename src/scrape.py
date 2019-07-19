@@ -207,7 +207,7 @@ def printCurrentScrapeMetrics(exit=False):
     if exit:
         print(f'\n\nEND _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}' f'exit(0) \n\n', sep='\n')
     else:
-        print(f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', sep='\n')
+        print(f'\n\n {strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', sep='\n ')
 
     #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
