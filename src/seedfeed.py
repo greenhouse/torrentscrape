@@ -1,13 +1,13 @@
 print('GO seedfeed.py -> starting IMPORTs')
-#import mydiscord
-from mydiscord import *
+#from sites import *
 from utilities import *
-#from constants import *
-from mydiscord.db_dm4c import *
-from mydiscord.discord_util import *
-from mydiscord.cmd_deposit import *
-from mydiscord.cmd_email import *
-#from binance_dm4c import *
+from discordts import *
+#from mydiscord import *
+#from mydiscord.db_dm4c import *
+#from mydiscord.discord_util import *
+#from mydiscord.cmd_deposit import *
+#from mydiscord.cmd_email import *
+
 
 '''
 # https://discordapp.com/developers/applications/
@@ -31,7 +31,7 @@ client = discord.Client()
 #lst_supportHashTagIds = ['#1892', '#6245', '#8552'] # house#1892, Nx2#6245, BlckPhantom#8552     <- DM4C server
 lst_supportHashTagIds = ['#1892', '#6785', '#8985'] # house#1892, NAD010286#6785, afrosatoshi#8985 <- torrent seed server
 #lst_supportHashTagIds = ['#1892']
-str_thisGuildName = cStrServerThaDevs
+str_thisGuildName = 'BitContent'
 str_userName = None
 i_userId = None
 i_totGuildCnt = None
@@ -58,7 +58,7 @@ def printThisGuildDetails():
 
 def getThisGuild(guilds):
     funcname = '(%s) getThisGuild' % filename
-    logenter(funcname, '(guilds=%s)' % str(guilds), simpleprint=False, tprint=False)
+    logenter(funcname, '(guilds=%s)' % str(guilds), simpleprint=False, tprint=True)
     for guild in guilds:
         if guild.name == str_thisGuildName:
             return guild

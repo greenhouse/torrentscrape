@@ -1,10 +1,9 @@
 print('GO discord_util.py -> starting IMPORTs')
 from utilities import *
-#from constants import *
 
 '''
 # https://discordapp.com/developers/applications/
-# https://discordapp.com/oauth2/authorize?client_id=588170504503033856&scope=bot&permissions=8
+# https://discordapp.com/oauth2/authorize?client_id=<sites/__init__.py>&scope=bot&permissions=8
 #NOTE: '$ pip3' == '$ python3.6 -m pip'
     $ pip3 install discord.py
     $ python3.7 -m pip install discord.py

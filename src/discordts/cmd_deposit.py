@@ -1,13 +1,13 @@
 print('GO cmd_deposit.py -> starting IMPORTs')
+from sites import *
 from utilities import *
-#from constants import *
-#from db_dm4c import *
-#from discord_util import *
-#from binance_dm4c import *
+from .db_dm4c import *
+from .discord_util import *
+from .binance_dm4c import *
 
 '''
 # https://discordapp.com/developers/applications/
-# https://discordapp.com/oauth2/authorize?client_id=588170504503033856&scope=bot&permissions=8
+# https://discordapp.com/oauth2/authorize?client_id=<sites/__init__.py>&scope=bot&permissions=8
 #NOTE: '$ pip3' == '$ python3.6 -m pip'
     $ pip3 install discord.py
     $ python3.6 -m pip install discord.py

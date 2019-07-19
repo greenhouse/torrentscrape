@@ -1,9 +1,7 @@
 print('GO db_dm4c.py -> starting IMPORTs')
-from mydiscord import *
-#from . import __init__
-#from discord import *
+from discordts import *
 from utilities import *
-#from constants import *
+
 
 
 '''
