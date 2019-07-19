@@ -196,6 +196,20 @@ def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=F
     print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
     return lst_str
 
+def printCurrentScrapeMetrics(exit=False):
+    strCurrTotal = 'Total' if exit else 'Current'
+    strLstCnt = f'{strCurrTotal} seed | leech counts found: {len(lst_info_hash)}'
+    strExceptCnt = f'{strCurrTotal} Exception Count: {cntExceptionsHit}'
+    strRequestCnt = f'{strCurrTotal} Request Count: {cntRequest}'
+    strResp200Cnt = f'{strCurrTotal} Response 200 Count: {cntResp200}'
+    strResp502Cnt = f'{strCurrTotal} Response 502 Count: {cntResp502}'
+
+    if exit:
+        print('\n\nEND _', '{strLstCnt}', '{strExceptCnt}', '{strRequestCnt}', '{strResp200Cnt}', '{strResp502Cnt}' 'exit(0) \n\n', sep='\n')
+    else:
+        print('{strLstCnt}', '{strExceptCnt}', '{strRequestCnt}', '{strResp200Cnt}', '{strResp502Cnt}', sep='\n')
+
+    #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
 # Connect to the URL & parse HTML to BeautifulSoup object
 #response = requests.get(url)
@@ -240,7 +254,7 @@ for x in range(0, iLastPageNum+1):
         continue
     finally:
         if bExcept: cntExceptionsHit += 1
-        print(f' ... exception hit: {bExcept} -> ATTEMPTING request -> GET on URL: {pageUrl}')
+        print(f' ... exception hit: {bExcept} -> ATTEMPTING request -> GET on URL: {pageUrl}\n\n')
 
     ## Connect to the URL & parse HTML to BeautifulSoup object
     #print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
@@ -273,6 +287,7 @@ for x in range(0, iLastPageNum+1):
 
     # print current info_hash list accumulated
     lst_info_hash_str = getPrintListStr(lst_info_hash_print, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
+    printCurrentScrapeMetrics(exit=False)
     print(f'\n Page #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
@@ -286,12 +301,13 @@ procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 #selrows = procCallGetLatestScrape()
 #print(f'Printing... selrows', *selrows, sep='\n ')
 
-strLstCnt = f'ALL seed | leech counts found: {len(lst_info_hash)}'
-strExceptCnt = f'Total Exception Count: {cntExceptionsHit}'
-strRequestCnt = f'Total Request Count: {cntRequest}'
-strResp200Cnt = f'Total Response 200 Count: {cntResp200}'
-strResp502Cnt = f'Total Response 502 Count: {cntResp502}'
-print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
+#strLstCnt = f'ALL seed | leech counts found: {len(lst_info_hash)}'
+#strExceptCnt = f'Total Exception Count: {cntExceptionsHit}'
+#strRequestCnt = f'Total Request Count: {cntRequest}'
+#strResp200Cnt = f'Total Response 200 Count: {cntResp200}'
+#strResp502Cnt = f'Total Response 502 Count: {cntResp502}'
+#print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
+printCurrentScrapeMetrics(exit=True)
 exit(0)
 
 
