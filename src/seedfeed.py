@@ -112,12 +112,12 @@ async def sendMemberLeavePrivateMsg(member):
     msg = "%s Bye... see ya!" % strMention
     await member.send(msg)
 
-async def sendMemberJoinPublicChannelMsg(member, channel):
+async def sendMemberJoinPrivateChannelMsg(member, channel):
     strMention = member.mention
-    msg = f"Welcome {strMention} thanks for joining BitSeed . . . ```please use \"!help\" for more details```"
+    msg = f"{strMention} has joined BitSeed . . . ```private welcome message has been sent to this user```"
     await channel.send(msg)
 
-async def sendMemberLeavePublicChannelMsg(member, channel):
+async def sendMemberLeavePrivateChannelMsg(member, channel):
     strMention = member.mention
     msg = "%s Bye... see ya!" % strMention
     await channel.send(msg)
@@ -157,9 +157,9 @@ async def on_member_join(member):
     loginfo(filename, 'User JOINED the server...', simpleprint=True)
     printMemberData(member)
     
-    # send 'welcome' channel message
-    channel = getChannelForName(cStrChanWelcome, lst_channels)
-    #await sendMemberJoinPublicChannelMsg(member, channel)
+    # send 'user-status' channel message
+    channel = getChannelForName(cStrChanUserStatus, lst_channels)
+    await sendMemberJoinPrivateChannelMsg(member, channel)
 
     # send private intro message
     await sendMemberJoinPrivateMsg(member)
@@ -175,9 +175,9 @@ async def on_member_remove(member):
     loginfo(filename, 'User REMOVED (left|kicked) from server...', simpleprint=True)
     printMemberData(member)
 
-    # send 'welcome' channel message
-    channel = getChannelForName(cStrChanWelcome, lst_channels)
-    await sendMemberLeavePublicChannelMsg(member, channel)
+    # send 'user-status' channel message
+    channel = getChannelForName(cStrChanUserStatus, lst_channels)
+    await sendMemberLeavePrivateChannelMsg(member, channel)
 
     # QUERY DATABASE PLAYER -> MEMBER REMOVED(left|kicked)
     DBQueryMemberRemove(member)
