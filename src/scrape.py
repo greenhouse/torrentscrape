@@ -28,11 +28,12 @@ url = sites.url + strSiteSubTypeUri + '/'
 ## designates the html order that the torrent side is displaying SE & LE
 flag_SE_LE_to_print = 1 # SE first = 1; LE first = 0
 
-iLastPageNum = 40
+iLastPageNum = 5
+iCntInfoHashSampleSize = 11
 torrentCnt = 0
 lst_info_hash = []
 lst_info_hash_print = []
-lst_info_hash_print_min = []
+lst_info_hash_print_sample = []
 lst_info_hash_str = ''
 
 lst_info_hash_all = []
@@ -106,6 +107,11 @@ def getSplicedTitleFromHrefTag(href_tag):
     spliced_href_tag = href_tag[idxSlash3+1:]
     return spliced_href_tag
 
+def checkAppendToInfoHashSampleLst(tup_info_hash):
+    if isinstance(tup_info_hash, tuple) and isinstance(lst_info_hash, list):
+        if len(lst_info_hash) <= iCntInfoHashSampleSize:
+            lst_info_hash_print_sample.append(tup_info_hash)
+
 def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
     global torrentCnt
     # traverse through all html tags <a>, looking for torrent rows containing seed & leech counts
@@ -140,7 +146,7 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                 spl_href_tag = getSplicedTitleFromHrefTag(href_tag)
                 strPgNum = 'PG# ' + str(iPgNum)
                 tup_info_hash_print = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag)
-                tup_info_hash_print_min = (info_hash, iSeed, iLeech, spl_href_tag)
+                tup_info_hash_print_sample = (info_hash, spl_href_tag)
                 
                 ## create info_hash tuple for database
                 tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag, href_tag, mag_link, 0)
@@ -154,9 +160,10 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                     print()
                     
                     # add tuple to list of hashes in demand
+                    if len(lst_info_hash) <= iCntInfoHashSampleSize: lst_info_hash_print_sample.append(tup_info_hash_print_sample)
                     lst_info_hash.append(tup_info_hash)
                     lst_info_hash_print.append(tup_info_hash_print)
-                    lst_info_hash_print_min.append(tup_info_hash_print_min)
+                    #checkAppendToInfoHashSampleLst(tup_info_hash_print_sample)
                 
                 # add tuple to list of all hashes scraped
                 lst_info_hash_all.append(tup_info_hash)
@@ -164,40 +171,40 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
         else:
             print('class not found')
 
-def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goStrTupPrint=False, goPrint=True):
-    strGoIndexPrint = None
-    if goIdxPrint:
-        strGoIndexPrint = '(w/ indexes)'
-    else:
-        strGoIndexPrint = '(w/o indexes)'
-
-    lst_str = None
-    if useEnumerate:
-        if goIdxPrint:
-            if goStrTupPrint:
-                lst_str = [f"{i}: {', '.join(map(str,v))}" for i,v in enumerate(lst)]
-            else:
-                lst_str = [f'{i}: {v}' for i,v in enumerate(lst)]
-        else:
-            if goStrTupPrint:
-                lst_str = [f"{', '.join(map(str,v))}" for i,v in enumerate(lst)]
-            else:
-                lst_str = [f'{v}' for i,v in enumerate(lst)]
-    else:
-        if goIdxPrint:
-            if goStrTupPrint:
-                lst_str = [f"{lst.index(x)}: {', '.join(map(str,x))}" for x in lst]
-            else:
-                lst_str = [f'{lst.index(x)}: {x}' for x in lst]
-        else:
-            if goStrTupPrint:
-                lst_str = [f"{', '.join(map(str,x))}" for x in lst]
-            else:
-                lst_str = [f'{x}' for x in lst]
-
-    lst_len = len(lst)
-    print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
-    return lst_str
+#def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goStrTupPrint=False, goPrint=True):
+#    strGoIndexPrint = None
+#    if goIdxPrint:
+#        strGoIndexPrint = '(w/ indexes)'
+#    else:
+#        strGoIndexPrint = '(w/o indexes)'
+#
+#    lst_str = None
+#    if useEnumerate:
+#        if goIdxPrint:
+#            if goStrTupPrint:
+#                lst_str = [f"{i}: {', '.join(map(str,v))}" for i,v in enumerate(lst)]
+#            else:
+#                lst_str = [f'{i}: {v}' for i,v in enumerate(lst)]
+#        else:
+#            if goStrTupPrint:
+#                lst_str = [f"{', '.join(map(str,v))}" for i,v in enumerate(lst)]
+#            else:
+#                lst_str = [f'{v}' for i,v in enumerate(lst)]
+#    else:
+#        if goIdxPrint:
+#            if goStrTupPrint:
+#                lst_str = [f"{lst.index(x)}: {', '.join(map(str,x))}" for x in lst]
+#            else:
+#                lst_str = [f'{lst.index(x)}: {x}' for x in lst]
+#        else:
+#            if goStrTupPrint:
+#                lst_str = [f"{', '.join(map(str,x))}" for x in lst]
+#            else:
+#                lst_str = [f'{x}' for x in lst]
+#
+#    lst_len = len(lst)
+#    print(f'\nPrinting List... {strListTitle} _ {strGoIndexPrint} _ found {lst_len}:', *lst_str, sep = "\n ")
+#    return lst_str
 
 def printCurrentScrapeMetrics(exit=False):
     strCurrTotal = 'Total' if exit else 'Current'
@@ -289,14 +296,17 @@ for x in range(0, iLastPageNum+1):
     getPrintTorrentDataSets(all_a_tags, iPgNum=x)
 
     # print current info_hash list accumulated
-    lst_info_hash_str = getPrintListStr(lst_info_hash_print, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
+#    lst_info_hash_str = getPrintListStr(lst_info_hash_print, strListTitle='current info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
+    lst_info_hash_str = getPrintListStrTuple(lst_info_hash_print, strListTitle='CURRENT info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
+
     printCurrentScrapeMetrics(exit=False)
     print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
-getPrintListStr(lst_info_hash_print_min, strListTitle='(MIN DATA) ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
-#printListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
+#getPrintListStr(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_hash in HIGH DEMAND; where SEED < LEECH', useEnumerate=True, goIdxPrint=False, goStrTupPrint=True)
+getPrintListStrTuple(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_hash in HIGH DEMAND; where SEED < LEECH', useEnumerate=True, goIdxPrint=False)
+#getPrintListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
 tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
 procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
