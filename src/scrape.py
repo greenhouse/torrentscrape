@@ -268,15 +268,17 @@ print('\n\n', cStrDivider2, sep='')
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
 
 print('\n\n', cStrDivider2, sep='')
+# perform db call to store scraped data
+tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
+procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
+
+print('\n\n', cStrDivider2, sep='')
 # print Minimal sample data info hashes found
 getPrintListStrTuple(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_hash in HIGH DEMAND; where SEED < LEECH', useEnumerate=True, goIdxPrint=False)
 
 # print ALL TOTAL info hashes scraped
 #getPrintListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
-# perform db call to store scraped data
-tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
-procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
 # print end status
 print('\n\n', cStrDivider2, sep='')
