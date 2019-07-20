@@ -10,7 +10,8 @@ import urllib.request
 import time
 from bs4 import BeautifulSoup # python3.7 -m pip install bs4
 
-import sites #required: sites/__init__.py
+#import sites #required: sites/__init__.py
+#from sites import *
 from utilities import *
 
 filename = 'scrape.py'
@@ -171,19 +172,24 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
         else:
             print('class not found')
 
-def printCurrentScrapeMetrics(exit=False):
-    strCurrTotal = 'Total' if exit else 'Current'
+#def printCurrentScrapeMetrics(end=False):
+def printCurrentScrapeMetrics(currPgNum=-1, lastPgNum=-1, end=False):
+    strCurrTotal = 'TOTAL' if end else 'CURRENT'
+
+    strEnd = f'TOTAL Pages SCARPED _ {lastPgNum} of {lastPgNum}'
+    strStatus = f'PAGE #{x} of {iLastPageNum} _ SCRAPED'
     strLstCnt = f'{strCurrTotal} seed | leech counts found: {len(lst_info_hash)}'
     strRequestCnt = f'{strCurrTotal} Request Count: {cntRequest}'
     strResp200Cnt = f'{strCurrTotal} Response 200 Count: {cntResp200}'
     strResp502Cnt = f'{strCurrTotal} Response 502 Count: {cntResp502}'
     strExceptCnt = f'{strCurrTotal} Exception Count: {cntExceptionsHit}'
 
-    if exit:
-        print(f'\n\nEND _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', f'exit(0) \n\n', sep='\n')
+    if end:
+#        print(f'\n\nEND _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', f'exit(0) \n\n', sep='\n')
+        print(f'\n\nEND _', f'{strEnd}', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
     else:
-        print(f'\n\nSTATUS _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
-
+        print(f'\n\nSTATUS _ {strStatus}', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
+#    print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
 # Connect to the URL & parse HTML to BeautifulSoup object
@@ -229,19 +235,14 @@ for x in range(0, iLastPageNum+1):
         continue
     finally:
         if bExcept: cntExceptionsHit += 1
-        print(f' ... exception hit: {bExcept} -> ATTEMPTING request -> GET on URL: {pageUrl}\n\n')
-
-    ## Connect to the URL & parse HTML to BeautifulSoup object
-    #print(f'ATTEMPTING request -> GET on URL: {pageUrl}')
-    #response = requests.get(pageUrl)
+        print(f' ... exception hit: {bExcept} -> ATTEMPTING request -> GET on URL: {pageUrl}\n')
 
     print(f'RECEIVED response -> GET on URL: {pageUrl}')
     print(f'... proceeding to parse response.text with BeautifulSoup\n\n')
     soup = BeautifulSoup(response.text, "html.parser")
 
     # print response (note: '<Response [200]>' means it went through)
-    print(f'RESPONSE from requests.get({pageUrl}):\n {response}\n {setting_orderBy}')
-    print()
+    print(f'RESPONSE from requests.get({pageUrl}):\n {response}\n {setting_orderBy}\n')
 
     # print full 'soup' parsed html text
     #print('printing full soup parsed html text:', soup)
@@ -260,25 +261,35 @@ for x in range(0, iLastPageNum+1):
     all_a_tags = soup.findAll('a')
     getPrintTorrentDataSets(all_a_tags, iPgNum=x)
 
+    print('\n\n', cStrDivider2, sep='')
     # print current info_hash list accumulated
     lst_info_hash_str = getPrintListStrTuple(lst_info_hash_print, strListTitle='CURRENT info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
 
-    printCurrentScrapeMetrics(exit=False)
-    print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
+    # print current status
+    printCurrentScrapeMetrics(currPgNum=x, lastPgNum=iLastPageNum, end=False)
+    print(cStrDivider2, 'sleep(1)', sep='\n\n', end='\n\n')
+#    print('sleep(1)')
+#    print(cStrDivider2, '\n\n')
     time.sleep(1)
 
+# print ALL 'in demand' info hashes found
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
+
+# print Minimal sample data info hashes found
 getPrintListStrTuple(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_hash in HIGH DEMAND; where SEED < LEECH', useEnumerate=True, goIdxPrint=False)
+
+# print ALL TOTAL info hashes scraped
 #getPrintListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
+# perform db call to store scraped data
 tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
 procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
-
-#selrows = procCallGetLatestScrape()
-#print(f'Printing... selrows', *selrows, sep='\n ')
-
-printCurrentScrapeMetrics(exit=True)
+print('\n\n', cStrDivider2, sep='')
+# print end status
+printCurrentScrapeMetrics(currPgNum=iLastPageNum, lastPgNum=iLastPageNum, end=True)
+print(cStrDivider2, 'exit(0)', sep='\n\n', end='\n\n')
 exit(0)
+
 
 

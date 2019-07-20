@@ -20,7 +20,7 @@ def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=F
             lst_str = [f'{x}' for x in lst]
 
     lst_len = len(lst)
-    print(f'\n{strListTitle} _ {strGoIndexPrint} _ count {lst_len}:', *lst_str, sep = "\n ")
+    print(f'{strListTitle} _ {strGoIndexPrint} _ count {lst_len}:', *lst_str, sep = "\n ")
     return lst_str
 
 def getPrintListStrTuple(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=False, goPrint=True):
@@ -43,6 +43,6 @@ def getPrintListStrTuple(lst=[], strListTitle='list', useEnumerate=True, goIdxPr
             lst_str = [f"{', '.join(map(str,x))}" for x in lst]
 
     lst_len = len(lst)
-    print(f'\n\n{strListTitle} _ {strGoIndexPrint} _ count {lst_len}:\n', *lst_str, sep = "\n ")
+    print(f'{strListTitle} _ {strGoIndexPrint} _ count {lst_len}:\n', *lst_str, sep = "\n ")
     return lst_str
 
