@@ -114,7 +114,7 @@ async def sendMemberLeavePrivateMsg(member):
 
 async def sendMemberJoinPrivateChannelMsg(member, channel):
     strMention = member.mention
-    msg = f"{strMention} has joined BitSeed . . . ```private welcome message has been sent to this user```"
+    msg = f"@here ``{strMention}`` has joined BitSeed . . . ```private welcome message has been sent to this user```"
     await channel.send(msg)
 
 async def sendMemberLeavePrivateChannelMsg(member, channel):
