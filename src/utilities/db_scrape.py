@@ -184,13 +184,18 @@ def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
         scrape_inst_id = -1 if rowCnt == 0 else rows[0]['@_InsertScrapeInstance_4']
         scrape_inst_id = (scrape_inst_id,)
         loginfo(funcname, f' >> InsertScrapeInstance RESULT procArgs: {procArgs}', simpleprint=True)
+
+        iCallProcCnt = 0
         for idx, tup in enumerate(infoHashTupArr):
             tup = (*scrape_inst_id, idx, *tup)
             procArgs = cur.callproc(f"InsertTorrentRecord", tup)
             rowCnt = cur.execute(f"select @_InsertTorrentRecord_10;")
             rows = cur.fetchall()
             ins_torrent_id = -1 if rowCnt == 0 else rows[0]['@_InsertTorrentRecord_10']
-            loginfo(funcname, f' >> InsertTorrentRecord RESULT procArgs: . . . ', simpleprint=True)
+            #loginfo(funcname, f' >> InsertTorrentRecord RESULT procArgs: . . . ', simpleprint=True)
+            iCallProcCnt += 1
+
+        loginfo(funcname, f' >> InsertTorrentRecord call count: {iCallProcCnt} ', simpleprint=True)
         result = 1
     except Exception as e: # ref: https://docs.python.org/2/tutorial/errors.html
         strE_0 = f"Exception hit... \nFAILED to call InsertScrapeInstance({tup_scrape_inst}); \n\ninfoHashTupArr: {infoHashTupArr}; \n\nreturning -1"
