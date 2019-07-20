@@ -294,7 +294,7 @@ for x in range(0, iLastPageNum+1):
     print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
-getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
+getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True, goStrTupPrint=True)
 getPrintListStr(lst_info_hash_print_min, strListTitle='ALL info_hash found (min data); where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
 #printListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
