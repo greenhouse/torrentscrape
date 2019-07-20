@@ -1,5 +1,5 @@
 print('GO cmd_deposit.py -> starting IMPORTs')
-from sites import *
+#from sites import *
 from utilities import *
 from .db_dm4c import *
 from .discord_util import *

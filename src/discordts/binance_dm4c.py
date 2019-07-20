@@ -1,5 +1,5 @@
 print('GO binance_dm4c.py -> starting IMPORTs')
-from sites import *
+#from sites import *
 from utilities import *
 
 '''
