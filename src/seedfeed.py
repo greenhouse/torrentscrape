@@ -101,7 +101,7 @@ def DBQueryMemberBalance(member):
 ##              aync support                        ##
 #====================================================#
 async def sendMemberJoinPrivateMsg(member):
-    msg = "hello, welcome to DM4C . . . I will be your guide for this server..."
+    msg = "hello, welcome to BitSeed . . . I will be your guide for this server..."
     await member.send(msg)
     
     msg = "please use ``!help`` for more details, or ``!deposit`` to start a deposit"
@@ -114,7 +114,7 @@ async def sendMemberLeavePrivateMsg(member):
 
 async def sendMemberJoinPublicChannelMsg(member, channel):
     strMention = member.mention
-    msg = "hey %s thanks for joining DM4C . . . ```please use \"!help\" for more details```" % strMention
+    msg = "hey %s thanks for joining BitSeed . . . ```please use \"!help\" for more details```" % strMention
     await channel.send(msg)
 
 async def sendMemberLeavePublicChannelMsg(member, channel):
