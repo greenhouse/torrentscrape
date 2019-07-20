@@ -32,6 +32,7 @@ iLastPageNum = 40
 torrentCnt = 0
 lst_info_hash = []
 lst_info_hash_print = []
+lst_info_hash_print_min = []
 lst_info_hash_str = ''
 
 lst_info_hash_all = []
@@ -139,6 +140,7 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                 spl_href_tag = getSplicedTitleFromHrefTag(href_tag)
                 strPgNum = 'PG# ' + str(iPgNum)
                 tup_info_hash_print = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag)
+                tup_info_hash_print_min = (info_hash, iSeed, iLeech, spl_href_tag)
                 
                 ## create info_hash tuple for database
                 tup_info_hash = (strPgNum, info_hash, iSeed, iLeech, file_size, spl_href_tag, href_tag, mag_link, 0)
@@ -154,6 +156,7 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                     # add tuple to list of hashes in demand
                     lst_info_hash.append(tup_info_hash)
                     lst_info_hash_print.append(tup_info_hash_print)
+                    lst_info_hash_print_min.append(tup_info_hash_print_min)
                 
                 # add tuple to list of all hashes scraped
                 lst_info_hash_all.append(tup_info_hash)
@@ -199,15 +202,15 @@ def getPrintListStr(lst=[], strListTitle='list', useEnumerate=True, goIdxPrint=F
 def printCurrentScrapeMetrics(exit=False):
     strCurrTotal = 'Total' if exit else 'Current'
     strLstCnt = f'{strCurrTotal} seed | leech counts found: {len(lst_info_hash)}'
-    strExceptCnt = f'{strCurrTotal} Exception Count: {cntExceptionsHit}'
     strRequestCnt = f'{strCurrTotal} Request Count: {cntRequest}'
     strResp200Cnt = f'{strCurrTotal} Response 200 Count: {cntResp200}'
     strResp502Cnt = f'{strCurrTotal} Response 502 Count: {cntResp502}'
+    strExceptCnt = f'{strCurrTotal} Exception Count: {cntExceptionsHit}'
 
     if exit:
-        print(f'\n\nEND _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'exit(0) \n\n', sep='\n')
+        print(f'\n\nEND _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', f'exit(0) \n\n', sep='\n')
     else:
-        print(f'\n\nSTATUS _', f'{strLstCnt}', f'{strExceptCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', sep='\n')
+        print(f'\n\nSTATUS _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
 
     #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
@@ -291,7 +294,8 @@ for x in range(0, iLastPageNum+1):
     print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
     time.sleep(1)
 
-getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where seed < leech', useEnumerate=True, goIdxPrint=True)
+getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
+getPrintListStr(lst_info_hash_print_min, strListTitle='ALL info_hash found (min data); where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
 #printListStr(lst_info_hash_all_print, strListTitle='ALL info_hash found; TOTAL', useEnumerate=True, goIdxPrint=True)
 
 tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
@@ -301,12 +305,6 @@ procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 #selrows = procCallGetLatestScrape()
 #print(f'Printing... selrows', *selrows, sep='\n ')
 
-#strLstCnt = f'ALL seed | leech counts found: {len(lst_info_hash)}'
-#strExceptCnt = f'Total Exception Count: {cntExceptionsHit}'
-#strRequestCnt = f'Total Request Count: {cntRequest}'
-#strResp200Cnt = f'Total Response 200 Count: {cntResp200}'
-#strResp502Cnt = f'Total Response 502 Count: {cntResp502}'
-#print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 printCurrentScrapeMetrics(exit=True)
 exit(0)
 
