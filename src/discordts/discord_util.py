@@ -1,5 +1,5 @@
 print('GO discord_util.py -> starting IMPORTs')
-from utilities import *
+from utilities import * #imports 'from sites import *'
 
 '''
 # https://discordapp.com/developers/applications/

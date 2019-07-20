@@ -2,7 +2,7 @@ print('\n\nSTART _ torrentscrape.py \n\n')
 import logging
 import json
 import sites #required: sites/__init__.py
-from request_agents import *
+from request_agents import * #imports 'from sites import *'
 from utilities import *
 from flask import Flask
 from flask import request, redirect,Response

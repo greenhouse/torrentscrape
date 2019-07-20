@@ -1,6 +1,6 @@
 print('GO db_scrape.py -> starting IMPORTs')
 import sites #required: sites/__init__.py
-from utilities import *
+from utilities import * #imports 'from sites import *'
 import json
 from flask import Response
 from re import *

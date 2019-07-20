@@ -9,10 +9,7 @@ import requests
 import urllib.request
 import time
 from bs4 import BeautifulSoup # python3.7 -m pip install bs4
-
-#import sites #required: sites/__init__.py
-#from sites import *
-from utilities import *
+from utilities import * #imports 'from sites import *'
 
 filename = 'scrape.py'
 logenter(filename, "\n IMPORTs complete:- STARTING -> file '%s' . . . " % filename, simpleprint=False, tprint=True)
@@ -159,12 +156,12 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
                     print(f'  Info_Hash: {info_hash}')
                     print(f'  Magnet Link: {mag_link}')
                     print()
-                    
+
                     # add tuple to list of hashes in demand
+                    #checkAppendToInfoHashSampleLst(tup_info_hash_print_sample)
                     if len(lst_info_hash) <= iCntInfoHashSampleSize: lst_info_hash_print_sample.append(tup_info_hash_print_sample)
                     lst_info_hash.append(tup_info_hash)
                     lst_info_hash_print.append(tup_info_hash_print)
-                    #checkAppendToInfoHashSampleLst(tup_info_hash_print_sample)
                 
                 # add tuple to list of all hashes scraped
                 lst_info_hash_all.append(tup_info_hash)
@@ -172,7 +169,6 @@ def getPrintTorrentDataSets(all_a_tags, iPgNum=-1):
         else:
             print('class not found')
 
-#def printCurrentScrapeMetrics(end=False):
 def printCurrentScrapeMetrics(currPgNum=-1, lastPgNum=-1, end=False):
     strCurrTotal = 'TOTAL' if end else 'CURRENT'
 
@@ -185,12 +181,9 @@ def printCurrentScrapeMetrics(currPgNum=-1, lastPgNum=-1, end=False):
     strExceptCnt = f'{strCurrTotal} Exception Count: {cntExceptionsHit}'
 
     if end:
-#        print(f'\n\nEND _', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', f'exit(0) \n\n', sep='\n')
         print(f'\n\nEND _', f'{strEnd}', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
     else:
         print(f'\n\nSTATUS _ {strStatus}', f'{strLstCnt}', f'{strRequestCnt}', f'{strResp200Cnt}', f'{strResp502Cnt}', f'{strExceptCnt}', sep='\n')
-#    print(f'\nPage #{x} of {iLastPageNum} _ DONE... sleep(1)\n\n')
-    #print(f'\n\nEND _ \n{strLstCnt} \n{strExceptCnt} \n{strRequestCnt} \n{strResp200Cnt} \n{strResp502Cnt} \nexit(0) \n\n')
 
 # Connect to the URL & parse HTML to BeautifulSoup object
 #response = requests.get(url)
@@ -208,7 +201,7 @@ for x in range(0, iLastPageNum+1):
     try:
         # Connect to the URL & parse HTML to BeautifulSoup object
         cntRequest += 1
-        print(f'ATTEMPTING request #{cntRequest} -> GET on URL: {pageUrl}')
+        print(f'\n\nATTEMPTING request #{cntRequest} -> GET on URL: {pageUrl}')
         response = requests.get(pageUrl)
         if response.status_code == 200:
             cntResp200 += 1
@@ -268,13 +261,13 @@ for x in range(0, iLastPageNum+1):
     # print current status
     printCurrentScrapeMetrics(currPgNum=x, lastPgNum=iLastPageNum, end=False)
     print(cStrDivider2, 'sleep(1)', sep='\n\n', end='\n\n')
-#    print('sleep(1)')
-#    print(cStrDivider2, '\n\n')
     time.sleep(1)
 
+print('\n\n', cStrDivider2, sep='')
 # print ALL 'in demand' info hashes found
 getPrintListStr(lst_info_hash_print, strListTitle='ALL info_hash found; where SEED < LEECH', useEnumerate=True, goIdxPrint=True)
 
+print('\n\n', cStrDivider2, sep='')
 # print Minimal sample data info hashes found
 getPrintListStrTuple(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_hash in HIGH DEMAND; where SEED < LEECH', useEnumerate=True, goIdxPrint=False)
 
@@ -285,8 +278,8 @@ getPrintListStrTuple(lst_info_hash_print_sample, strListTitle='SAMPLE DATA info_
 tup_scrape_inst = (iSiteTypeId, strSiteSubTypeUri, rootUrl, iLastPageNum, 0)
 procCallAdminCreateScrapeInstance(tup_scrape_inst, lst_info_hash)
 
-print('\n\n', cStrDivider2, sep='')
 # print end status
+print('\n\n', cStrDivider2, sep='')
 printCurrentScrapeMetrics(currPgNum=iLastPageNum, lastPgNum=iLastPageNum, end=True)
 print(cStrDivider2, 'exit(0)', sep='\n\n', end='\n\n')
 exit(0)

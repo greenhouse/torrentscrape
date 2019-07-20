@@ -1,6 +1,5 @@
 print('GO cmd_email.py -> starting IMPORTs')
-#from sites import *
-from utilities import *
+from utilities import * #imports 'from sites import *'
 from .db_dm4c import *
 from .discord_util import *
 #from binance_dm4c import *
