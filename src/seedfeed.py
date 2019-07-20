@@ -101,10 +101,10 @@ def DBQueryMemberBalance(member):
 ##              aync support                        ##
 #====================================================#
 async def sendMemberJoinPrivateMsg(member):
-    msg = "hello, welcome to BitSeed . . . I will be your guide for this server..."
+    msg = "Hello, welcome to BitSeed . . . I will be your guide for this server..."
     await member.send(msg)
     
-    msg = "please use ``!help`` for more details, or ``!deposit`` to start a deposit"
+    msg = "You may start by heading over to the #general channel for BitSpeed discussion, and please feel free to use the ``!help`` command for more details."
     await member.send(msg)
 
 async def sendMemberLeavePrivateMsg(member):
@@ -114,7 +114,7 @@ async def sendMemberLeavePrivateMsg(member):
 
 async def sendMemberJoinPublicChannelMsg(member, channel):
     strMention = member.mention
-    msg = "hey %s thanks for joining BitSeed . . . ```please use \"!help\" for more details```" % strMention
+    msg = f"Welcome {strMention} thanks for joining BitSeed . . . ```please use \"!help\" for more details```"
     await channel.send(msg)
 
 async def sendMemberLeavePublicChannelMsg(member, channel):
@@ -159,7 +159,7 @@ async def on_member_join(member):
     
     # send 'welcome' channel message
     channel = getChannelForName(cStrChanWelcome, lst_channels)
-    await sendMemberJoinPublicChannelMsg(member, channel)
+    #await sendMemberJoinPublicChannelMsg(member, channel)
 
     # send private intro message
     await sendMemberJoinPrivateMsg(member)
@@ -245,13 +245,7 @@ async def on_message(message):
         msg = 'Hi {0.author.mention}... you requested some help?'.format(message)
         await member.send(msg)
 
-        usage = ("!help \n"
-                 "!deposit \n"
-                 "!withdraw \n"
-                 "!balance \n"
-                 "!RegisterEmail \n"
-                 "!LiveSupport \n")
-
+        usage = sites.cCmdUsage
         msg = "The following is a list of commands you may use ```%s```" % usage
         await member.send(msg)
         loginfo(filename, cStrDivider, simpleprint=True)
@@ -267,19 +261,19 @@ async def on_message(message):
         loginfo(filename, cStrDivider, simpleprint=True)
         return
 
-    if strCmd == '!balance':
-        # QUERY DATABASE PLAYER -> GET BALANCE
-        balance = DBQueryMemberBalance(member)
-        msg = f"```your current balance is {balance}```"
-        await member.send(msg)
-        loginfo(filename, cStrDivider, simpleprint=True)
-        return
-
-    if strCmd == '!deposit':
-        msg = CMD_deposit(member, lstMsgContent)
-        await member.send(msg)
-        loginfo(filename, cStrDivider, simpleprint=True)
-        return
+    #if strCmd == '!balance':
+    #    # QUERY DATABASE PLAYER -> GET BALANCE
+    #    balance = DBQueryMemberBalance(member)
+    #    msg = f"```your current balance is {balance}```"
+    #    await member.send(msg)
+    #    loginfo(filename, cStrDivider, simpleprint=True)
+    #    return
+    #
+    #if strCmd == '!deposit':
+    #    msg = CMD_deposit(member, lstMsgContent)
+    #    await member.send(msg)
+    #    loginfo(filename, cStrDivider, simpleprint=True)
+    #    return
 
     if strCmd == '!registeremail':
         msg = CMD_email(member, lstMsgContent)
