@@ -108,52 +108,51 @@ kPathGetScrapeLast8 = '/api/get/scrape/last/8'
 # GET all db entries from latest scrape
 @app.route(kPathGetScrapeLast, methods=lst_MethGetScrapeLast)
 def GetAllLatest():
-    #logging.info('%s %s \'%s\'  %s' % (strUriHit, lst_MethGetScrapeLast, kPathGetScrapeLast, strUriHit))
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  _  {strUriHit}")
     return getLatestScrape(request)
 
 @app.route(kPathGetScrapeLast1, methods=lst_MethGetScrapeLast)
 def GetAllLatest1():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast1}'  _  {strUriHit}")
     return getLatestSubType(request, subType=1)
 
 @app.route(kPathGetScrapeLast2, methods=lst_MethGetScrapeLast)
 def GetAllLatest2():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast2}'  _  {strUriHit}")
     return getLatestSubType(request, subType=2)
 
 @app.route(kPathGetScrapeLast3, methods=lst_MethGetScrapeLast)
 def GetAllLatest3():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast3}'  _  {strUriHit}")
     return getLatestSubType(request, subType=3)
 
 @app.route(kPathGetScrapeLast4, methods=lst_MethGetScrapeLast)
 def GetAllLatest4():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast4}'  _  {strUriHit}")
     return getLatestSubType(request, subType=4)
 
 @app.route(kPathGetScrapeLast5, methods=lst_MethGetScrapeLast)
 def GetAllLatest5():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast5}'  _  {strUriHit}")
     return getLatestSubType(request, subType=5)
 
 @app.route(kPathGetScrapeLast6, methods=lst_MethGetScrapeLast)
 def GetAllLatest6():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast6}'  _  {strUriHit}")
     return getLatestSubType(request, subType=6)
 
 @app.route(kPathGetScrapeLast7, methods=lst_MethGetScrapeLast)
 def GetAllLatest7():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast7}'  _  {strUriHit}")
     return getLatestSubType(request, subType=7)
 
 @app.route(kPathGetScrapeLast8, methods=lst_MethGetScrapeLast)
 def GetAllLatest8():
-    logenter(filename, f"{strUriHit} {lst_MethGetScrapeLast} '{kPathGetScrapeLast}'  {strUriHit}")
+    logenter(filename, f"{strUriHit}  _  {lst_MethGetScrapeLast} '{kPathGetScrapeLast8}'  _  {strUriHit}")
     return getLatestSubType(request, subType=8)
 
 def getLatestSubType(request, subType=0):
-    logenter(filename, f"request: {request}; subType: {subType}")
+    logenter(filename, f"request: {request}; subType: {subType}", simpleprint=True)
     return getLatestScrapeSubType(request, subType)
 
 

@@ -163,7 +163,7 @@ def jsonTimestampFromDBQueryTimestamp(timestamp):
 #====================================================#
 def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
     funcname = f'({filename}) procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr)'
-    logenter(funcname, 'tup_scrape_inst & infoHashTupArr: . . . ', simpleprint=False, tprint=True)
+    logenter(funcname, 'tup_scrape_inst & infoHashTupArr: . . . ', simpleprint=False, tprint=False)
     #print(*[f" [{i}] {': '.join(map(str,str(v)))}" for i,v in enumerate(list(tup_scrape_inst))], sep='\n', end='\n\n')
     #print(*[f" [{i}] {': '.join(map(str,v))}" for i,v in enumerate(infoHashTupArr)], sep='\n', end='\n\n')
 
@@ -210,7 +210,7 @@ def procCallAdminCreateScrapeInstance(tup_scrape_inst, infoHashTupArr):
 
 def procCallGetLatestScrape():
     funcname = f'({filename}) procCallGetLatestScrape()'
-    logenter(funcname, simpleprint=False, tprint=True)
+    logenter(funcname, simpleprint=False, tprint=False)
 
     ############# open db connection ###############
     global cur
@@ -243,7 +243,7 @@ def procCallGetLatestScrape():
 
 def procCallGetLatestScrapeSubType(subTypeId=0):
     funcname = f'({filename}) procCallGetLatestScrapeSubType({subTypeId})'
-    logenter(funcname, simpleprint=False, tprint=True)
+    logenter(funcname, simpleprint=False, tprint=False)
 
     ############# open db connection ###############
     global cur
