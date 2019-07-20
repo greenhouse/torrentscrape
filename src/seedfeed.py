@@ -104,7 +104,7 @@ async def sendMemberJoinPrivateMsg(member):
     msg = "Hello, welcome to BitSeed . . . I will be your guide for this server..."
     await member.send(msg)
     
-    msg = "You may start by heading over to the #general channel for BitSpeed discussion, and please feel free to use the ``!help`` command for more details."
+    msg = "You may start by heading over to the #general channel for 'BitSeed' discussion, and please feel free to use the ``!help`` command for more details."
     await member.send(msg)
 
 async def sendMemberLeavePrivateMsg(member):
